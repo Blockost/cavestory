@@ -18,6 +18,9 @@ public:
     ~Game();
 
 private:
+    // Max number of frame per second
+    const int FPS = 50;
+
     void gameLoop();
 
     void draw(Graphics &graphics);
