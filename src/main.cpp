@@ -2,8 +2,8 @@
 #include "Graphics.h"
 
 int main() {
-    Graphics graphics("hello", 1);
-    graphics.doStuff();
+    Graphics graphics;
+    //while (true) {}
 
     return 0;
 }

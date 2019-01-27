@@ -8,22 +8,20 @@
 
 #include <string>
 #include <iostream>
+#include <SDL2/SDL.h>
 
 class Graphics {
 
 private:
-    std::string name;
-    int number;
+    SDL_Window* window;
+    SDL_Renderer* renderer;
 
 public:
     // Constructor
-    Graphics(std::string, int);
+    Graphics();
 
     // Destructor
     virtual ~Graphics();
-
-    void doStuff();
-
 };
 
 

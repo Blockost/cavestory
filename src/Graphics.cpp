@@ -4,15 +4,12 @@
 
 #include "Graphics.h"
 
-Graphics::Graphics(std::string name, int number) : name(std::move(name)), number(number) {
-    std::cout << "Constructor called with params: name: " << this->name << ", number: "
-              << this->number << std::endl;
+Graphics::Graphics() {
+    SDL_CreateWindowAndRenderer(640, 480, 0, &this->window, &this->renderer);
+    SDL_SetWindowTitle(this->window, "Cavestory");
 }
 
 Graphics::~Graphics() {
-    std::cout << "Destructor called" << std::endl;
-}
-
-void Graphics::doStuff() {
-    std::cout << "Doing stuff now" << std::endl;
+    SDL_DestroyWindow(this->window);
+    SDL_DestroyRenderer(this->renderer);
 }
