@@ -10,6 +10,8 @@ include_directories(src)
 add_executable(cavestory
         src/Graphics.cpp
         src/Graphics.h
-        src/main.cpp)
+        src/main.cpp
+        src/Game.cpp
+        src/Game.h)
 
 target_link_libraries(cavestory ${SDL2_LIBRARIES})

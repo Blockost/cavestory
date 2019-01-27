@@ -2,8 +2,8 @@
 // Created by blockost on 1/24/19.
 //
 
-#ifndef GRAPHICS_H
-#define GRAPHICS_H
+#ifndef CAVESTORY_GRAPHICS_H
+#define CAVESTORY_GRAPHICS_H
 
 
 #include <string>
@@ -12,17 +12,15 @@
 
 class Graphics {
 
-private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-
 public:
-    // Constructor
     Graphics();
 
-    // Destructor
     virtual ~Graphics();
+
+private:
+    SDL_Window *window;
+    SDL_Renderer *renderer;
 };
 
 
-#endif //GRAPHICS_H
+#endif //CAVESTORY_GRAPHICS_H

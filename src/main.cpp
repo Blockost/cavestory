@@ -1,9 +1,11 @@
-#include <iostream>
-#include "Graphics.h"
 
+#include "Game.h"
+
+/**
+ * Application's entry point.
+ */
 int main() {
-    Graphics graphics;
-    //while (true) {}
+    Game game;
 
     return 0;
 }
