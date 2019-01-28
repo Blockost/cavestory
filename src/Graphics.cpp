@@ -4,10 +4,9 @@
 
 #include "Graphics.h"
 
-Graphics::Graphics() = default;;
+Graphics::Graphics() = default;
 
 Graphics::~Graphics() {
-    std::cout << "Destructor called" << std::endl;
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
 }
@@ -21,7 +20,10 @@ void Graphics::createWindowAndRenderer() {
 void Graphics::loadTexture(const std::string &filePath) {
     if (textures.count(filePath) == 0) {
         SDL_Surface *surface = IMG_Load(filePath.c_str());
-        // TODO 2019-27-01 blockost check if surface is not null (nullptr) here
+        if (surface == nullptr) {
+            fprintf(stderr, "Unable to load texture '%s'.", filePath.c_str());
+            exit(Flags::UNABLE_TO_LOAD_TEXTURE);
+        }
 
         SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_FreeSurface(surface);
@@ -31,6 +33,12 @@ void Graphics::loadTexture(const std::string &filePath) {
 }
 
 SDL_Texture *Graphics::getTexture(const std::string &filePath) {
+    SDL_Texture *texture = textures[filePath];
+    if (texture == nullptr) {
+        fprintf(stderr, "Unable to retrieve texture '%s'. Make sure you load it first.",
+                filePath.c_str());
+        exit(Flags::TEXTURE_NOT_FOUND);
+    }
     return textures[filePath];
 }
 

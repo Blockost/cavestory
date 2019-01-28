@@ -30,7 +30,7 @@ private:
 
     void gameLoop();
 
-    void draw(Graphics &graphics);
+    void draw();
 
     void update(float elapsedTime);
 

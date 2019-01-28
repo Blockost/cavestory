@@ -29,8 +29,8 @@ void Game::gameLoop() {
     SDL_Texture *texture = this->graphics.getTexture("../data/sprites/MyChar.png");
     SDL_Rect sourceRect = {0, 0, 16, 16};
     SDL_Rect destRect = {100, 100, 100, 100};
-    graphics.copyToRenderer(texture, &sourceRect, &destRect);
-    graphics.render();
+    this->graphics.copyToRenderer(texture, &sourceRect, &destRect);
+    this->graphics.render();
 
     while (true) {
         if (SDL_PollEvent(&event)) {
@@ -39,7 +39,7 @@ void Game::gameLoop() {
     }
 }
 
-void Game::draw(Graphics &graphics) {}
+void Game::draw() {}
 
 void Game::update(float elapsedTime) {}
 

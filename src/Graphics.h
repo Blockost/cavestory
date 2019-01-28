@@ -12,6 +12,8 @@
 #include <SDL2/SDL_image.h>
 #include <map>
 
+#include <util/Flags.h>
+
 class Graphics {
 
 public:
