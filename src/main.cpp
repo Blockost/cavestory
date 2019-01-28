@@ -5,7 +5,8 @@
  * Application's entry point.
  */
 int main() {
-    Game game;
+    Graphics graphics;
+    Game game(graphics);
 
     return 0;
 }

@@ -13,13 +13,20 @@
  */
 class Game {
 public:
-    Game();
+    /**
+     * Default constructor.
+     */
+    explicit Game(Graphics &graphics);
 
+    /**
+     * Destructor.
+     */
     ~Game();
 
 private:
     // Max number of frame per second
     const int FPS = 50;
+    Graphics &graphics;
 
     void gameLoop();
 
@@ -27,6 +34,7 @@ private:
 
     void update(float elapsedTime);
 
+    // Takes action based on incoming SDL_Event
     void processEvent(const SDL_Event &event);
 
 };

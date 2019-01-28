@@ -2,9 +2,13 @@ cmake_minimum_required(VERSION 3.13)
 project(cavestory)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+
 include_directories(cavestory ${SDL2_INCLUDE_DIRS})
+include_directories(cavestory ${SDL2_IMAGE_INCLUDE_DIRS}})
 include_directories(src)
 
 add_executable(cavestory
@@ -14,4 +18,4 @@ add_executable(cavestory
         src/Game.cpp
         src/Game.h)
 
-target_link_libraries(cavestory ${SDL2_LIBRARIES})
+target_link_libraries(cavestory ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
