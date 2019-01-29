@@ -52,7 +52,8 @@ public:
     void render();
 
     /**
-     * Clears the rendering target with the draw color.
+     * Clears the rendering target with the current draw color (set by SDL_SetRenderDrawColor).
+     * The render() method still needs to be called for the screen to be updated.
      */
     void clear();
 
