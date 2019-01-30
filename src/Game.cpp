@@ -14,7 +14,6 @@ Game::Game() {
     this->graphics.loadTexture("../data/sprites/MyChar.png");
 
     this->player = Player(this->graphics);
-    this->player.setAnimation("RunRight");
 
     this->startGameLoop();
 }

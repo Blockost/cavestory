@@ -11,6 +11,9 @@ Player::Player(Graphics &graphics) {
     this->sprite = AnimatedSprite(playerTexture);
     this->sprite.addAnimations("RunLeft", 3, 0, 0);
     this->sprite.addAnimations("RunRight", 3, 0, 16);
+
+    // Set player's default animation
+    this->setAnimation("RunRight");
 }
 
 Player::~Player() = default;;
