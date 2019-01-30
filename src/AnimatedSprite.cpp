@@ -5,7 +5,9 @@
 #include "AnimatedSprite.h"
 #include "util/Globals.h"
 
-AnimatedSprite::AnimatedSprite(SDL_Texture *texture) : texture(texture) {}
+AnimatedSprite::AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime) : texture(texture),
+                                                                               maxFrameLifetime(
+                                                                                       maxFrameLifetime) {}
 
 AnimatedSprite::~AnimatedSprite() = default;
 
@@ -30,6 +32,10 @@ void AnimatedSprite::resetAnimations() {
     this->animations.clear();
 }
 
+void AnimatedSprite::setAnimation(const std::string &animationName) {
+    this->currentAnimation = animationName;
+}
+
 void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
     if (this->currentAnimation.empty()) {
         fprintf(stderr, "Current animation is not defined.\n");
@@ -44,6 +50,16 @@ void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
     graphics.copyToRenderer(this->texture, &sourceRect, &destRect);
 }
 
-void AnimatedSprite::setAnimation(const std::string &animationName) {
-    this->currentAnimation = animationName;
+void AnimatedSprite::update(float elapsedTime) {
+    this->elapsedTime += elapsedTime;
+
+    if (this->elapsedTime >= this->maxFrameLifetime) {
+        if (this->frameIndex >= this->animations[this->currentAnimation].size() - 1) {
+            this->frameIndex = 0;
+        } else {
+            this->frameIndex++;
+        }
+        // Reset elapsed time to 0 because the frame has been updated
+        this->elapsedTime = 0;
+    }
 }

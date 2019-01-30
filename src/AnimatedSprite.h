@@ -22,7 +22,7 @@ public:
     /**
      * Constructor.
      */
-    explicit AnimatedSprite(SDL_Texture *texture);
+    AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime);
 
     /**
      * Destructor.
@@ -40,16 +40,32 @@ public:
     void resetAnimations();
 
     /**
+     * Sets the given animation as the one to be played.
+     */
+    void setAnimation(const std::string &animationName);
+
+    /**
      * Draws (copies) the current frame of the sprite to the renderer at position x and y.
      */
     void draw(Graphics &graphics, int x, int y);
 
-    void setAnimation(const std::string &animationName);
+    /**
+     * Updates the sprite animation based on the elapsed time since last update. Basically, it
+     * updates the index of the frame that will be drawn afterwards.
+     */
+    void update(float elapsedTime);
 
 private:
     SDL_Texture *texture{};
+    // Index of the current frame in the current animation
     int frameIndex = 0;
+    // Max number of milliseconds to wait before changing the frame
+    float maxFrameLifetime = 0;
+    // Number of milliseconds since the last frame update
+    float elapsedTime = 0;
+    // String identifier for the current animation being played
     std::string currentAnimation;
+    // List of all animations
     std::map<std::string, std::vector<SDL_Rect>> animations;
 };
 

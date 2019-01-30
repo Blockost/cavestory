@@ -36,6 +36,11 @@ public:
      */
     void draw(Graphics &graphics);
 
+    /**
+     * Updates player based on elapsed time since last update.
+     */
+    void update(float elapsedTime);
+
 private:
     AnimatedSprite sprite;
 };

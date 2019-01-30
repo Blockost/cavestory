@@ -86,6 +86,9 @@ void Game::draw() {
 void Game::update(float elapsedTime) {
     // TODO 28-Jan-2019 blockost Update sprites/models/physics here passing elapsed time (since the
     // last update)
+
+    // Update the player
+    this->player.update(elapsedTime);
 }
 
 void Game::processEvent(const SDL_Event &event) {}
