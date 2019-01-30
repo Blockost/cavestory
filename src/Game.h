@@ -7,6 +7,7 @@
 
 
 #include "Graphics.h"
+#include "Player.h"
 
 /**
  * This class contains the logic of the main game loop.
@@ -16,7 +17,7 @@ public:
     /**
      * Default constructor.
      */
-    explicit Game(Graphics &graphics);
+    Game();
 
     /**
      * Destructor.
@@ -26,10 +27,15 @@ public:
 private:
     // Max number of frame per second
     const int FPS = 50;
-    Graphics &graphics;
+    Graphics graphics;
+    Player player;
 
-    void gameLoop();
+    void startGameLoop();
 
+    /**
+     * This method draws everything the game needs to make appear on the screen and will be called
+     * at then end of each game loop.
+     */
     void draw();
 
     void update(float elapsedTime);

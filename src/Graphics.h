@@ -20,13 +20,16 @@ public:
     /**
      * Default constructor
      */
-    Graphics();
+    Graphics() = default;
 
     /**
      * Destructor.
      */
     ~Graphics();
 
+    /**
+     * Creates an SDL window and an SDL renderer. This method should be called before anything else.
+     */
     void createWindowAndRenderer();
 
     /**
@@ -41,7 +44,7 @@ public:
     SDL_Texture *getTexture(const std::string &filePath);
 
     /**
-     *Copy the texture into the renderer.
+     * Copy the texture into the renderer.
      * All the textures inside the renderer will be drawn to the screen by calling the render() method
      */
     void copyToRenderer(SDL_Texture *texture, SDL_Rect *sourceRect, SDL_Rect *destRect);
@@ -58,8 +61,8 @@ public:
     void clear();
 
 private:
-    SDL_Window *window;
-    SDL_Renderer *renderer;
+    SDL_Window *window{};
+    SDL_Renderer *renderer{};
     std::map<std::string, SDL_Texture *> textures;
 };
 

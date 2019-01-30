@@ -19,6 +19,9 @@ add_executable(cavestory
         src/Game.h
         src/util/Flags.h
         src/AnimatedSprite.cpp
-        src/AnimatedSprite.h)
+        src/AnimatedSprite.h
+        src/Player.cpp
+        src/Player.h
+        src/util/Globals.h)
 
 target_link_libraries(cavestory ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})

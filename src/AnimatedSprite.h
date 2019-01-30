@@ -8,13 +8,21 @@
 
 #include <SDL_rect.h>
 #include <vector>
+#include <string>
+#include "Graphics.h"
 
 class AnimatedSprite {
 public:
+
+    /**
+     * Default constructor.
+     */
+    AnimatedSprite() = default;
+
     /**
      * Constructor.
      */
-    explicit AnimatedSprite(std::vector<SDL_Rect> &sourceRects);
+    explicit AnimatedSprite(SDL_Texture *texture);
 
     /**
      * Destructor.
@@ -22,14 +30,27 @@ public:
     ~AnimatedSprite();
 
     /**
-     * Retrieves the next rectangles in the animation.
+     * Adds a animation to the list of this sprite's animation.
      */
-    SDL_Rect &next();
+    void addAnimations(const std::string &animationName, int numberOfFrames, int x, int y);
+
+    /**
+     * Resets the list of animations for this sprite.
+     */
+    void resetAnimations();
+
+    /**
+     * Draws (copies) the current frame of the sprite to the renderer at position x and y.
+     */
+    void draw(Graphics &graphics, int x, int y);
+
+    void setAnimation(const std::string &animationName);
 
 private:
-    int counter = 0;
-    unsigned long animationSize;
-    std::vector<SDL_Rect> sourceRects;
+    SDL_Texture *texture{};
+    int frameIndex = 0;
+    std::string currentAnimation;
+    std::map<std::string, std::vector<SDL_Rect>> animations;
 };
 
 

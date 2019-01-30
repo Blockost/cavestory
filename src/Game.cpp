@@ -4,37 +4,31 @@
 
 #include <vector>
 #include <iterator>
+#include <chrono>
 #include "Game.h"
-#include "AnimatedSprite.h"
 
-Game::Game(Graphics &graphics) : graphics(graphics) {
-
-    std::cout << "Initializing SDL subsystems..." << std::endl;
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
-    }
-
+Game::Game() {
     this->graphics.createWindowAndRenderer();
+
     std::cout << "Loading textures..." << std::endl;
     this->graphics.loadTexture("../data/sprites/MyChar.png");
 
-    this->gameLoop();
+    this->player = Player(this->graphics);
+    this->player.setAnimation("RunRight");
+
+    this->startGameLoop();
 }
 
 Game::~Game() {
     SDL_Quit();
 }
 
-void Game::gameLoop() {
+void Game::startGameLoop() {
     SDL_Event event;
 
-    SDL_Texture *texture = this->graphics.getTexture("../data/sprites/MyChar.png");
-    std::vector<SDL_Rect> rectsVector{{0,  0, 16, 16},
-                                      {16, 0, 16, 16},
-                                      {32, 0, 16, 16}};
-    SDL_Rect destRect = {100, 100, 100, 100};
-
-    AnimatedSprite animatedSprite(rectsVector);
+    int startTimeInMs = SDL_GetTicks();
+    int endTimeInMs;
+    int elapsedTimeInMs;
 
     while (true) {
         if (SDL_PollEvent(&event)) {
@@ -46,19 +40,19 @@ void Game::gameLoop() {
                     std::cout << "Key pressed: " << SDL_GetScancodeName(event.key.keysym.scancode)
                               << std::endl;
 
-                    if (event.key.keysym.scancode == SDL_SCANCODE_E)
-                        this->graphics.clear();
+                    // Right Arrow key
+                    if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
+                        this->player.setAnimation("RunRight");
+                    }
 
                     // Left Arrow key
                     if (event.key.keysym.scancode == SDL_SCANCODE_LEFT) {
-                        this->graphics.copyToRenderer(texture, &animatedSprite.next(), &destRect);
-                        this->graphics.render();
+                        this->player.setAnimation("RunLeft");
                     }
 
                     // Escape key
                     if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
                         exit(0);
-
 
                     break;
                 case SDL_QUIT:
@@ -68,12 +62,31 @@ void Game::gameLoop() {
                     break;
             }
         }
+
+        endTimeInMs = SDL_GetTicks();
+        elapsedTimeInMs = endTimeInMs - startTimeInMs;
+        startTimeInMs = endTimeInMs;
+
+        this->update(elapsedTimeInMs);
+        this->draw();
     }
 
 }
 
-void Game::draw() {}
+void Game::draw() {
+    // Wipe the renderer
+    this->graphics.clear();
 
-void Game::update(float elapsedTime) {}
+    // Draw everything here
+    this->player.draw(this->graphics);
+
+    // Finally, render onto the screen
+    this->graphics.render();
+}
+
+void Game::update(float elapsedTime) {
+    // TODO 28-Jan-2019 blockost Update sprites/models/physics here passing elapsed time (since the
+    // last update)
+}
 
 void Game::processEvent(const SDL_Event &event) {}

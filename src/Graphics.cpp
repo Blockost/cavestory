@@ -4,8 +4,6 @@
 
 #include "Graphics.h"
 
-Graphics::Graphics() = default;
-
 Graphics::~Graphics() {
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
@@ -16,30 +14,33 @@ void Graphics::createWindowAndRenderer() {
     SDL_SetWindowTitle(this->window, "Cavestory");
 }
 
-
 void Graphics::loadTexture(const std::string &filePath) {
-    if (textures.count(filePath) == 0) {
+    if (this->textures.count(filePath) == 0) {
         SDL_Surface *surface = IMG_Load(filePath.c_str());
         if (surface == nullptr) {
-            fprintf(stderr, "Unable to load texture '%s'.", filePath.c_str());
-            exit(Flags::UNABLE_TO_LOAD_TEXTURE);
+            fprintf(stderr, "Unable to load surface '%s'.", filePath.c_str());
+            exit(Flags::UNABLE_TO_LOAD_SURFACE);
         }
 
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-        SDL_FreeSurface(surface);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(this->renderer, surface);
+        if (texture == nullptr) {
+            fprintf(stderr, "Unable to convert surface to texture: %s", SDL_GetError());
+            exit(Flags::UNABLE_TO_CONVERT_SURFACE_TO_TEXTURE);
+        }
 
-        textures[filePath] = texture;
+        SDL_FreeSurface(surface);
+        this->textures[filePath] = texture;
     }
 }
 
 SDL_Texture *Graphics::getTexture(const std::string &filePath) {
-    SDL_Texture *texture = textures[filePath];
+    SDL_Texture *texture = this->textures[filePath];
     if (texture == nullptr) {
         fprintf(stderr, "Unable to retrieve texture '%s'. Make sure you load it first.",
                 filePath.c_str());
         exit(Flags::TEXTURE_NOT_FOUND);
     }
-    return textures[filePath];
+    return this->textures[filePath];
 }
 
 
