@@ -31,7 +31,7 @@ void Game::startGameLoop() {
 
     while (true) {
         if (SDL_PollEvent(&event)) {
-
+            this->player.handleEvent(event);
             switch (event.type) {
                 case SDL_KEYDOWN:
                     std::cout << "Key held: " << ((event.key.repeat != 0) ? "yes" : "no")
@@ -39,19 +39,9 @@ void Game::startGameLoop() {
                     std::cout << "Key pressed: " << SDL_GetScancodeName(event.key.keysym.scancode)
                               << std::endl;
 
-                    // Right Arrow key
-                    if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
-                        this->player.setAnimation("RunRight");
-                    }
-
-                    // Left Arrow key
-                    if (event.key.keysym.scancode == SDL_SCANCODE_LEFT) {
-                        this->player.setAnimation("RunLeft");
-                    }
-
-                    // Escape key
-                    if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+                    if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
                         exit(0);
+                    }
 
                     break;
                 case SDL_QUIT:

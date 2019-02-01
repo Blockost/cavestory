@@ -31,6 +31,10 @@ public:
      */
     void setAnimation(const std::string &animationName);
 
+    void move();
+
+    void handleEvent(const SDL_Event &event);
+
     /**
      * Draws the player to the screen (delegating logic to the sprite).
      */
@@ -42,7 +46,15 @@ public:
     void update(float elapsedTime);
 
 private:
+
+    // Number of pixels the player can move on the X-Axis per frame
+    const static int X_VELOCITY = 1;
+    // Number of pixels the player can move on the Y-Axis per frame
+    const static int Y_VELOCITY = 1;
+
     AnimatedSprite sprite;
+    int posX = 0, posY = 0;
+    int velX = 0, velY = 0;
 };
 
 

@@ -7,6 +7,9 @@
 
 namespace Globals {
 
+    const int SCREEN_WIDTH = 640;
+    const int SCREEN_HEIGHT = 480;
+
 // In cavestory, sprites are 16x16 pixels
     const int SPRITE_WIDTH = 16;
     const int SPRITE_HEIGHT = 16;

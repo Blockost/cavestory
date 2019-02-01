@@ -2,6 +2,7 @@
 // Created by blockost on 1/24/19.
 //
 
+#include <util/Globals.h>
 #include "Graphics.h"
 
 Graphics::~Graphics() {
@@ -10,7 +11,8 @@ Graphics::~Graphics() {
 }
 
 void Graphics::createWindowAndRenderer() {
-    SDL_CreateWindowAndRenderer(640, 480, 0, &this->window, &this->renderer);
+    SDL_CreateWindowAndRenderer(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT, 0, &this->window,
+                                &this->renderer);
     SDL_SetWindowTitle(this->window, "Cavestory");
 }
 
