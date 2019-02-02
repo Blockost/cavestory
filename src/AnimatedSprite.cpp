@@ -51,7 +51,7 @@ void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
     graphics.copyToRenderer(this->texture, &sourceRect, &destRect);
 }
 
-void AnimatedSprite::update(float elapsedTime) {
+void AnimatedSprite::update(int elapsedTime) {
     this->elapsedTime += elapsedTime;
 
     if (this->elapsedTime >= this->maxFrameLifetime) {

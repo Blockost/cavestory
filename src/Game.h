@@ -26,6 +26,7 @@ public:
     ~Game();
 
 private:
+    // TODO 02-Feb-2019 blockost Limit frame per second?
     // Max number of frame per second
     const int FPS = 50;
     Graphics graphics;
@@ -40,7 +41,7 @@ private:
      */
     void draw();
 
-    void update(float elapsedTime);
+    void update(int elapsedTime);
 };
 
 

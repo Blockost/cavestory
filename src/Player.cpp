@@ -91,7 +91,7 @@ void Player::draw(Graphics &graphics) {
     this->sprite.draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
 }
 
-void Player::update(float elapsedTime) {
+void Player::update(int elapsedTime) {
     this->move(elapsedTime);
     this->sprite.update(elapsedTime);
 }

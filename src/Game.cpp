@@ -71,7 +71,7 @@ void Game::draw() {
     this->graphics.render();
 }
 
-void Game::update(float elapsedTime) {
+void Game::update(int elapsedTime) {
     // TODO 28-Jan-2019 blockost Update sprites/models/physics here passing elapsed time (since the
     // last update)
 

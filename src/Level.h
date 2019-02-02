@@ -34,7 +34,7 @@ public:
     /**
      * Update level based on elapsed time since last update.
      */
-    void update(float elapsedTime);
+    void update(int elapsedTime);
 
 
 private:

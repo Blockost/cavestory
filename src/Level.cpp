@@ -31,6 +31,6 @@ void Level::draw(Graphics &graphics) {
     }
 }
 
-void Level::update(float elapsedTime) {
+void Level::update(int elapsedTime) {
 
 }

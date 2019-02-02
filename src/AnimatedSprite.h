@@ -53,7 +53,7 @@ public:
      * Updates the sprite animation based on the elapsed time since last update. Basically, it
      * updates the index of the frame that will be drawn afterwards.
      */
-    void update(float elapsedTime);
+    void update(int elapsedTime);
 
 private:
     SDL_Texture *texture{};

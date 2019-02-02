@@ -12,6 +12,8 @@ include_directories(cavestory ${SDL2_INCLUDE_DIRS})
 include_directories(cavestory ${SDL2_IMAGE_INCLUDE_DIRS}})
 include_directories(src)
 
+add_library(tinyxml2 lib/tinyxml2/tinyxml2.h lib/tinyxml2/tinyxml2.cpp)
+
 add_executable(cavestory
         src/Graphics.cpp
         src/Graphics.h
