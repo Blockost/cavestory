@@ -7,6 +7,7 @@
 
 #include <string>
 #include "AnimatedSprite.h"
+#include "util/Globals.h"
 
 class Player {
 public:
@@ -31,8 +32,14 @@ public:
      */
     void setAnimation(const std::string &animationName);
 
-    void move();
+    /**
+     * Moves the player by updating its position (taking into account screen size).
+     */
+    void move(float elapsedTime);
 
+    /**
+     * Handles SDL Event related to the player.
+     */
     void handleEvent(const SDL_Event &event);
 
     /**
@@ -48,13 +55,33 @@ public:
 private:
 
     // Number of pixels the player can move on the X-Axis per frame
-    const static int X_VELOCITY = 1;
+    constexpr static float X_VELOCITY = 0.25f;
     // Number of pixels the player can move on the Y-Axis per frame
-    const static int Y_VELOCITY = 1;
-
+    constexpr static float Y_VELOCITY = 0.25f;
     AnimatedSprite sprite;
-    int posX = 0, posY = 0;
-    int velX = 0, velY = 0;
+    float posX = 0, posY = 0;
+    float velX = 0, velY = 0;
+    Direction facingDirection = Direction::LEFT;
+
+    /**
+     * Utility method to move the player to the left;
+     */
+    void moveLeft();
+
+    /**
+     * Utility method to move the player to the right.
+     */
+    void moveRight();
+
+    /**
+     * Utility method to move the player upwards.
+     */
+    void moveUp();
+
+    /**
+     * Utility method to move the player downwards.
+     */
+    void moveDown();
 };
 
 

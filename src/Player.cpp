@@ -13,8 +13,12 @@ Player::Player(Graphics &graphics) {
     this->sprite.addAnimations("RunLeft", 3, 0, 0);
     this->sprite.addAnimations("RunRight", 3, 0, 16);
 
+    this->sprite.addAnimations("IdleLeft", 1, 0, 0);
+    this->sprite.addAnimations("IdleRight", 1, 0, 16);
+
     // Set player's default animation
-    this->setAnimation("RunRight");
+    this->setAnimation("IdleRight");
+    this->facingDirection = Direction::RIGHT;
 }
 
 Player::~Player() = default;
@@ -23,14 +27,16 @@ void Player::setAnimation(const std::string &animationName) {
     this->sprite.setAnimation(animationName);
 }
 
-void Player::move() {
+void Player::move(float elapsedTime) {
 
-    const int finalPosX = this->posX + this->velX;
+    // XXX 02-Feb-2019 blockost Multiplying by elapsedTime is supposed to smooth movements
+    // based on frame rate
+    const float finalPosX = this->posX + this->velX * elapsedTime;
     if (finalPosX >= 0 && finalPosX < Globals::SCREEN_WIDTH - Globals::SPRITE_WIDTH * 2) {
         this->posX = finalPosX;
     }
 
-    const int finalPosY = this->posY + this->velY;
+    const float finalPosY = this->posY + this->velY * elapsedTime;
     if (finalPosY >= 0 && finalPosY < Globals::SCREEN_HEIGHT - Globals::SPRITE_HEIGHT * 2) {
         this->posY = finalPosY;
     }
@@ -41,18 +47,16 @@ void Player::handleEvent(const SDL_Event &event) {
 
         switch (event.key.keysym.scancode) {
             case SDL_SCANCODE_RIGHT:
-                this->setAnimation("RunRight");
-                this->velX += X_VELOCITY;
+                this->moveRight();
                 break;
             case SDL_SCANCODE_LEFT:
-                this->setAnimation("RunLeft");
-                this->velX -= X_VELOCITY;
+                this->moveLeft();
                 break;
             case SDL_SCANCODE_UP:
-                this->velY -= Y_VELOCITY;
+                this->moveUp();
                 break;
             case SDL_SCANCODE_DOWN:
-                this->velY += Y_VELOCITY;
+                this->moveDown();
                 break;
             default:
                 // Do nothing
@@ -63,12 +67,12 @@ void Player::handleEvent(const SDL_Event &event) {
     if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.scancode) {
             case SDL_SCANCODE_RIGHT:
-                this->setAnimation("RunRight");
                 this->velX -= X_VELOCITY;
+                this->sprite.setAnimation("IdleRight");
                 break;
             case SDL_SCANCODE_LEFT:
-                this->setAnimation("RunLeft");
                 this->velX += X_VELOCITY;
+                this->sprite.setAnimation("IdleLeft");
                 break;
             case SDL_SCANCODE_UP:
                 this->velY += Y_VELOCITY;
@@ -84,12 +88,33 @@ void Player::handleEvent(const SDL_Event &event) {
 }
 
 void Player::draw(Graphics &graphics) {
-    this->sprite.draw(graphics, this->posX, this->posY);
+    this->sprite.draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
 }
 
 void Player::update(float elapsedTime) {
-    this->move();
+    this->move(elapsedTime);
     this->sprite.update(elapsedTime);
 }
 
+void Player::moveLeft() {
+    this->setAnimation("RunLeft");
+    this->velX -= X_VELOCITY;
+    this->facingDirection = Direction::LEFT;
+}
+
+void Player::moveRight() {
+    this->setAnimation("RunRight");
+    this->velX += X_VELOCITY;
+    this->facingDirection = Direction::RIGHT;
+}
+
+void Player::moveUp() {
+    this->velY -= Y_VELOCITY;
+    this->facingDirection = Direction::UP;
+}
+
+void Player::moveDown() {
+    this->velY += Y_VELOCITY;
+    this->facingDirection = Direction::DOWN;
+}
 

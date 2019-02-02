@@ -34,6 +34,7 @@ void AnimatedSprite::resetAnimations() {
 
 void AnimatedSprite::setAnimation(const std::string &animationName) {
     this->currentAnimation = animationName;
+    this->frameIndex = 0;
 }
 
 void AnimatedSprite::draw(Graphics &graphics, int x, int y) {

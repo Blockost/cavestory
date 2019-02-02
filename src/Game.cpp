@@ -2,9 +2,6 @@
 // Created by blockost on 1/27/19.
 //
 
-#include <vector>
-#include <iterator>
-#include <chrono>
 #include "Game.h"
 
 Game::Game() {
@@ -34,11 +31,6 @@ void Game::startGameLoop() {
             this->player.handleEvent(event);
             switch (event.type) {
                 case SDL_KEYDOWN:
-                    std::cout << "Key held: " << ((event.key.repeat != 0) ? "yes" : "no")
-                              << std::endl;
-                    std::cout << "Key pressed: " << SDL_GetScancodeName(event.key.keysym.scancode)
-                              << std::endl;
-
                     if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
                         exit(0);
                     }
