@@ -9,8 +9,10 @@ Game::Game() {
 
     std::cout << "Loading textures..." << std::endl;
     this->graphics.loadTexture("../data/sprites/MyChar.png");
+    this->graphics.loadTexture("../data/backgrounds/bkBlue.png");
 
     this->player = Player(this->graphics);
+    this->level = Level(this->graphics, "test map", Coord(100, 100));
 
     this->startGameLoop();
 }
@@ -60,6 +62,9 @@ void Game::draw() {
     this->graphics.clear();
 
     // Draw everything here
+    this->level.draw(this->graphics);
+    // XXX 02-Feb-2019 blockost Player should be the last thing drawn to that it appears above
+    // everything else
     this->player.draw(this->graphics);
 
     // Finally, render onto the screen

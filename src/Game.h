@@ -8,6 +8,7 @@
 
 #include "Graphics.h"
 #include "Player.h"
+#include "Level.h"
 
 /**
  * This class contains the logic of the main game loop.
@@ -29,6 +30,7 @@ private:
     const int FPS = 50;
     Graphics graphics;
     Player player;
+    Level level;
 
     void startGameLoop();
 
