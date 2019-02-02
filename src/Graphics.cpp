@@ -8,6 +8,10 @@
 Graphics::~Graphics() {
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
+
+    // XXX 02-Feb-2019 blockost For a reason I don't know (yet), all the loaded textures are
+    // already destroyed when reaching this destructor (SDL error message says: "Invalid Texture")
+    // So I will assume everything has been cleaned up somehow and nothing needs to be done here
 }
 
 void Graphics::createWindowAndRenderer() {

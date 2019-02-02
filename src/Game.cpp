@@ -20,24 +20,25 @@ Game::~Game() {
 }
 
 void Game::startGameLoop() {
+    bool gameIsRunning = true;
     SDL_Event event;
 
     int startTimeInMs = SDL_GetTicks();
     int endTimeInMs;
     int elapsedTimeInMs;
 
-    while (true) {
+    while (gameIsRunning) {
         if (SDL_PollEvent(&event)) {
             this->player.handleEvent(event);
             switch (event.type) {
                 case SDL_KEYDOWN:
                     if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-                        exit(0);
+                        gameIsRunning = false;
                     }
 
                     break;
                 case SDL_QUIT:
-                    exit(0);
+                    gameIsRunning = false;
                 default:
                     // Do nothing for unsupported events
                     break;
