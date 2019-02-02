@@ -63,7 +63,7 @@ void Game::draw() {
 
     // Draw everything here
     this->level.draw(this->graphics);
-    // XXX 02-Feb-2019 blockost Player should be the last thing drawn to that it appears above
+    // XXX 02-Feb-2019 blockost Player should be the last thing drawn so that it appears on top of
     // everything else
     this->player.draw(this->graphics);
 
@@ -77,6 +77,7 @@ void Game::update(float elapsedTime) {
 
     // Update the player
     this->player.update(elapsedTime);
-}
 
-void Game::processEvent(const SDL_Event &event) {}
+    // Update the current level
+    this->level.update(elapsedTime);
+}

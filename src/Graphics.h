@@ -20,7 +20,7 @@ public:
     /**
      * Default constructor
      */
-    Graphics() = default;
+    Graphics();
 
     /**
      * Destructor.

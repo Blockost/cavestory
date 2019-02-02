@@ -5,6 +5,8 @@
 #include <util/Globals.h>
 #include "Graphics.h"
 
+Graphics::Graphics() = default;
+
 Graphics::~Graphics() {
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);

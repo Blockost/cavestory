@@ -41,10 +41,6 @@ private:
     void draw();
 
     void update(float elapsedTime);
-
-    // Takes action based on incoming SDL_Event
-    void processEvent(const SDL_Event &event);
-
 };
 
 
