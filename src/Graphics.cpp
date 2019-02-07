@@ -48,7 +48,7 @@ SDL_Texture *Graphics::getTexture(const std::string &filePath) {
                 filePath.c_str());
         exit(Flags::TEXTURE_NOT_FOUND);
     }
-    return this->textures[filePath];
+    return texture;
 }
 
 

@@ -5,6 +5,8 @@
 #ifndef CAVESTORY_GLOBALS_H
 #define CAVESTORY_GLOBALS_H
 
+#include <ostream>
+
 namespace Globals {
 
     const int SCREEN_WIDTH = 640;
@@ -32,7 +34,14 @@ enum Direction {
 struct Coord {
     int x, y;
 
+    Coord() : x(0), y(0) {};
+
     Coord(int x, int y) : x(x), y(y) {};
+
+    friend std::ostream &operator<<(std::ostream &ostream, const Coord &coord) {
+        ostream << "(" << coord.x << "," << coord.y << ")";
+        return ostream;
+    }
 };
 
 #endif //CAVESTORY_GLOBALS_H

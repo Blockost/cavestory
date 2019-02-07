@@ -7,7 +7,12 @@
 
 
 #include <util/Globals.h>
+#include <vector>
+#include <ostream>
+
 #include "Graphics.h"
+#include "Tile.h"
+#include "Tileset.h"
 
 class Level {
 public:
@@ -40,7 +45,17 @@ public:
 private:
     SDL_Texture *mapTexture;
     Coord mapSize = Coord(0, 0);
-};
+    std::string mapName;
 
+    // List of tilesets for the current level
+    std::vector<Tileset> tilesets;
+
+    // List of tiles for the current level
+    std::vector<Tile> tiles;
+
+    void loadMap(Graphics &graphics);
+
+    const Tileset &getTilesetAssociatedToGid(int gid) const;
+};
 
 #endif //CAVESTORY_LEVEL_H

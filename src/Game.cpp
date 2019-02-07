@@ -12,7 +12,7 @@ Game::Game() {
     this->graphics.loadTexture("../data/backgrounds/bkBlue.png");
 
     this->player = Player(this->graphics);
-    this->level = Level(this->graphics, "test map", Coord(100, 100));
+    this->level = Level(this->graphics, "prtcave", Coord(100, 100));
 
     this->startGameLoop();
 }
@@ -72,9 +72,6 @@ void Game::draw() {
 }
 
 void Game::update(int elapsedTime) {
-    // TODO 28-Jan-2019 blockost Update sprites/models/physics here passing elapsed time (since the
-    // last update)
-
     // Update the player
     this->player.update(elapsedTime);
 
