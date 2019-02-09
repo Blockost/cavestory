@@ -12,6 +12,14 @@ include_directories(cavestory ${SDL2_INCLUDE_DIRS})
 include_directories(cavestory ${SDL2_IMAGE_INCLUDE_DIRS}})
 include_directories(src)
 
+# Include dependencies installed via Conan
+#if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+#    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+#    conan_basic_setup()
+#else ()
+#    message(WARNING "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first")
+#endif ()
+
 add_executable(cavestory
         src/Graphics.cpp
         src/Graphics.h
@@ -26,7 +34,7 @@ add_executable(cavestory
         src/util/Globals.h
         src/Level.cpp
         src/Level.h
-        lib/nlohmann_json/json.hpp
+        lib/nlohmann/json.hpp
         src/Tileset.cpp
         src/Tileset.h
         src/Tile.cpp

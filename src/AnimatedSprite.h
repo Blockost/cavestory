@@ -6,7 +6,7 @@
 #define CAVESTORY_ANIMATEDSPRITE_H
 
 
-#include <SDL_rect.h>
+#include <SDL2/SDL_rect.h>
 #include <vector>
 #include <string>
 #include "Graphics.h"

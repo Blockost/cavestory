@@ -7,7 +7,7 @@
 
 #include "Level.h"
 #include "exceptions/InvalidLevelException.h"
-#include "../lib/nlohmann_json/json.hpp"
+#include "../lib/nlohmann/json.hpp"
 
 using json = nlohmann::json;
 
