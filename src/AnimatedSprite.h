@@ -66,7 +66,7 @@ private:
     // String identifier for the current animation being played
     std::string currentAnimation;
     // List of all animations
-    std::map<std::string, std::vector<SDL_Rect>> animations;
+    std::map<std::string, std::vector<SDL_Rect>> animations{};
 };
 
 

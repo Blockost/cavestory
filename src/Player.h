@@ -58,10 +58,11 @@ private:
     constexpr static float X_VELOCITY = 0.25f;
     // Number of pixels the player can move on the Y-Axis per frame
     constexpr static float Y_VELOCITY = 0.25f;
+
     AnimatedSprite sprite;
-    float posX = 0, posY = 0;
-    float velX = 0, velY = 0;
-    Direction facingDirection = Direction::LEFT;
+    float posX, posY;
+    float velX, velY;
+    Direction facingDirection;
 
     /**
      * Utility method to move the player to the left;
@@ -82,6 +83,17 @@ private:
      * Utility method to move the player downwards.
      */
     void moveDown();
+
+    /**
+     * Utility method to make the player jump. Jumping does not change facing direction.
+     */
+    void jump();
+
+    /**
+     * Utility method that applied gravity to the player by constantly increasing player's velocity
+     * until it reaches a certain cap.
+     */
+    void applyGravity();
 };
 
 

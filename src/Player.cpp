@@ -5,7 +5,7 @@
 #include <util/Globals.h>
 #include "Player.h"
 
-Player::Player(Graphics &graphics) {
+Player::Player(Graphics &graphics) : posX(0), posY(0), velX(0), velY(0), facingDirection(RIGHT) {
 
     SDL_Texture *playerTexture = graphics.getTexture("../data/sprites/MyChar.png");
 
@@ -58,6 +58,8 @@ void Player::handleEvent(const SDL_Event &event) {
             case SDL_SCANCODE_DOWN:
                 this->moveDown();
                 break;
+            case SDL_SCANCODE_SPACE:
+                this->jump();
             default:
                 // Do nothing
                 break;
@@ -92,6 +94,7 @@ void Player::draw(Graphics &graphics) {
 }
 
 void Player::update(int elapsedTime) {
+    this->applyGravity();
     this->move(elapsedTime);
     this->sprite.update(elapsedTime);
 }
@@ -118,3 +121,14 @@ void Player::moveDown() {
     this->facingDirection = Direction::DOWN;
 }
 
+void Player::jump() {
+    this->velY -= 2 * Y_VELOCITY;
+}
+
+void Player::applyGravity() {
+    if (this->velY <= Globals::GRAVITY_CAP) {
+        this->velY += Globals::GRAVITY;
+    } else {
+        this->velY = 0;
+    }
+}
