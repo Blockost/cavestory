@@ -12,7 +12,8 @@
 #include <SDL2/SDL_image.h>
 #include <map>
 
-#include <util/Flags.h>
+#include "util/Flags.h"
+#include "util/Globals.h"
 
 class Graphics {
 
@@ -47,7 +48,13 @@ public:
      * Copy the texture into the renderer.
      * All the textures inside the renderer will be drawn to the screen by calling the render() method
      */
-    void copyToRenderer(SDL_Texture *texture, SDL_Rect *sourceRect, SDL_Rect *destRect);
+    void copyTextureToRenderer(SDL_Texture *texture, const SDL_Rect *sourceRect,
+                               const SDL_Rect *destRect);
+
+    /**
+     * Draws the given rectangle with the given color to the rendering target.
+     */
+    void DrawRectToRenderer(const SDL_Rect *rect, RgbColor color);
 
     /**
      * Draws everything stored in the renderer on the actual window.

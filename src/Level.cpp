@@ -23,9 +23,17 @@ Level::Level(Graphics &graphics, const std::string &mapName, Coord playerSpawnPo
 
 Level::~Level() = default;
 
+std::vector<BoundingBox> &Level::getBoundingBoxes() {
+    return this->boundingBoxes;
+}
+
 void Level::draw(Graphics &graphics) {
     for (const auto &tile : this->tiles) {
         tile.draw(graphics);
+    }
+
+    for (const auto &boundingBox: this->boundingBoxes) {
+        boundingBox.draw(graphics);
     }
 }
 
@@ -48,8 +56,11 @@ void Level::loadMap(Graphics &graphics) {
 
     // Retrieve tilesets texture + size (width, height)
     auto tilesets = jsonFile["tilesets"];
-    for (auto &t: tilesets) {
-        std::string texturePath = t["image"];
+    for (const auto &t: tilesets) {
+
+        // TODO 12-Feb-2019 blockost In Tiled, path to tilesets is relative to the map.
+        // We should find a more elegant way for a workaround
+        std::string texturePath = "../data/tilesets/" + t["image"].get<std::string>();
         int firstGid = t["firstgid"];
         int tilesetWidth = t["columns"];
         int textureHeight = t["tilecount"].get<int>() / tilesetWidth;
@@ -62,16 +73,30 @@ void Level::loadMap(Graphics &graphics) {
 
     // Retrieve tiles
     auto layers = jsonFile["layers"];
-    for (auto &l : layers) {
-        auto data = l["data"];
-        int tileCounter = 0;
-        for (auto &t : data) {
-            // Only store tiles whose gid != 0
-            if (t != 0) {
-                Tile tile(t, tileCounter, this->getTilesetAssociatedToGid(t));
-                this->tiles.push_back(std::move(tile));
+    for (const auto &layer : layers) {
+
+        // Parse collisions objects
+        if (layer["name"] == "collisions") {
+            auto collisionObjects = layer["objects"];
+            for (const auto &collisionObject: collisionObjects) {
+                this->boundingBoxes.emplace_back(BoundingBox(
+                        static_cast<int>(collisionObject["x"]) * Globals::SPRITE_SCALE,
+                        static_cast<int>(collisionObject["y"]) * Globals::SPRITE_SCALE,
+                        collisionObject["width"],
+                        collisionObject["height"]));
             }
-            tileCounter++;
+        } else {
+            // Parse other layers (which should contain tiles only)
+            auto data = layer["data"];
+            int tileCounter = 0;
+            for (const auto &t : data) {
+                // Only store tiles whose gid != 0
+                if (t != 0) {
+                    Tile tile(t, tileCounter, this->getTilesetAssociatedToGid(t));
+                    this->tiles.push_back(std::move(tile));
+                }
+                tileCounter++;
+            }
         }
     }
 

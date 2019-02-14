@@ -20,6 +20,7 @@ void Graphics::createWindowAndRenderer() {
     SDL_CreateWindowAndRenderer(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT, 0, &this->window,
                                 &this->renderer);
     SDL_SetWindowTitle(this->window, "Cavestory");
+    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 0);
 }
 
 void Graphics::loadTexture(const std::string &filePath) {
@@ -52,9 +53,17 @@ SDL_Texture *Graphics::getTexture(const std::string &filePath) {
 }
 
 
-void Graphics::copyToRenderer(SDL_Texture *texture, SDL_Rect *sourceRect,
-                              SDL_Rect *destRect) {
+void Graphics::copyTextureToRenderer(SDL_Texture *texture, const SDL_Rect *sourceRect,
+                                     const SDL_Rect *destRect) {
     SDL_RenderCopy(this->renderer, texture, sourceRect, destRect);
+}
+
+void Graphics::DrawRectToRenderer(const SDL_Rect *rect, RgbColor color) {
+    SDL_SetRenderDrawColor(this->renderer, color.red, color.green, color.blue, 0);
+    SDL_RenderDrawRect(this->renderer, rect);
+
+    // Reset draw color (in case it's important...)
+    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 0);
 }
 
 void Graphics::render() {

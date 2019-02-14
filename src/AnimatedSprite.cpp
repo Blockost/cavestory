@@ -3,7 +3,6 @@
 //
 
 #include "AnimatedSprite.h"
-#include "util/Globals.h"
 
 AnimatedSprite::AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime) : texture(texture),
                                                                                maxFrameLifetime(
@@ -48,7 +47,7 @@ void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
     SDL_Rect destRect = {x, y, Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE,
                          Globals::SPRITE_HEIGHT * Globals::SPRITE_SCALE};
 
-    graphics.copyToRenderer(this->texture, &sourceRect, &destRect);
+    graphics.copyTextureToRenderer(this->texture, &sourceRect, &destRect);
 }
 
 void AnimatedSprite::update(int elapsedTime) {

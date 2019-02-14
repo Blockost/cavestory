@@ -8,6 +8,7 @@
 #include <string>
 #include "AnimatedSprite.h"
 #include "util/Globals.h"
+#include "BoundingBox.h"
 
 class Player {
 public:
@@ -15,7 +16,7 @@ public:
     /**
      * Default constructor.
      */
-    Player() = default;
+    Player();
 
     /**
      * Constructor.
@@ -26,6 +27,8 @@ public:
      * Destructor.
      */
     ~Player();
+
+    const BoundingBox getBoundingBox() const;
 
     /**
      * Sets the given animation as the one to be played.
@@ -63,6 +66,7 @@ private:
     float posX, posY;
     float velX, velY;
     Direction facingDirection;
+    BoundingBox boundingBox;
 
     /**
      * Utility method to move the player to the left;

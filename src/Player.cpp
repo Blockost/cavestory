@@ -5,6 +5,8 @@
 #include <util/Globals.h>
 #include "Player.h"
 
+Player::Player() : posX(0), posY(0), velX(0), velY(0), facingDirection(RIGHT) {}
+
 Player::Player(Graphics &graphics) : posX(0), posY(0), velX(0), velY(0), facingDirection(RIGHT) {
 
     SDL_Texture *playerTexture = graphics.getTexture("../data/sprites/MyChar.png");
@@ -23,6 +25,10 @@ Player::Player(Graphics &graphics) : posX(0), posY(0), velX(0), velY(0), facingD
 
 Player::~Player() = default;
 
+const BoundingBox Player::getBoundingBox() const {
+    return this->boundingBox;
+}
+
 void Player::setAnimation(const std::string &animationName) {
     this->sprite.setAnimation(animationName);
 }
@@ -40,6 +46,11 @@ void Player::move(float elapsedTime) {
     if (finalPosY >= 0 && finalPosY < Globals::SCREEN_HEIGHT - Globals::SPRITE_HEIGHT * 2) {
         this->posY = finalPosY;
     }
+
+    // TODO 12-Feb-2019 blockost Move this statement to the Sprite class (the player class should
+    // not be responsible for this)
+    this->boundingBox.set(static_cast<int>(this->posX), static_cast<int>(this->posY),
+                          Globals::SPRITE_WIDTH, Globals::SPRITE_HEIGHT);
 }
 
 void Player::handleEvent(const SDL_Event &event) {
@@ -91,10 +102,12 @@ void Player::handleEvent(const SDL_Event &event) {
 
 void Player::draw(Graphics &graphics) {
     this->sprite.draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
+    this->boundingBox.draw(graphics);
 }
 
 void Player::update(int elapsedTime) {
-    this->applyGravity();
+    // TODO 13-Feb-2019 blockost Re-enable when it's ready
+    // this->applyGravity();
     this->move(elapsedTime);
     this->sprite.update(elapsedTime);
 }

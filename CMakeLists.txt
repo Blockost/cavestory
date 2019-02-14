@@ -40,7 +40,9 @@ add_executable(cavestory
         src/Tile.cpp
         src/Tile.h
         src/exceptions/InvalidLevelException.cpp
-        src/exceptions/InvalidLevelException.h)
+        src/exceptions/InvalidLevelException.h
+        src/BoundingBox.cpp
+        src/BoundingBox.h)
 
 target_link_libraries(cavestory
         ${SDL2_LIBRARIES}

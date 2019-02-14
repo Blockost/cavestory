@@ -77,4 +77,16 @@ void Game::update(int elapsedTime) {
 
     // Update the current level
     this->level.update(elapsedTime);
+
+    // TODO 13-Feb-2019 blockost For the moment, bounding boxes are drawn on the screen
+    // and collisions are reprensented by a color change of the collided bounding box.
+    // This needs to be reworked in order to stop the player moving into the direction
+    // he is colliding with
+    for (auto &boundingBox : this->level.getBoundingBoxes()) {
+        if (this->player.getBoundingBox().isCollidingWith(boundingBox)) {
+            boundingBox.setColor(RgbColor(255, 0, 0));
+        } else {
+            boundingBox.setColor(RgbColor(255, 255, 255));
+        }
+    }
 }

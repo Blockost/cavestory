@@ -39,5 +39,5 @@ void Tile::draw(Graphics &graphics) const {
                          Globals::SPRITE_HEIGHT * Globals::SPRITE_SCALE};
 
     SDL_Texture *texture = graphics.getTexture(this->tileset.getTexturePath());
-    graphics.copyToRenderer(texture, &sourceRect, &destRect);
+    graphics.copyTextureToRenderer(texture, &sourceRect, &destRect);
 }

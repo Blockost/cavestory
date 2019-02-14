@@ -13,6 +13,7 @@
 #include "Graphics.h"
 #include "Tile.h"
 #include "Tileset.h"
+#include "BoundingBox.h"
 
 class Level {
 public:
@@ -30,6 +31,8 @@ public:
      * Destructor.
      */
     ~Level();
+
+    std::vector<BoundingBox> &getBoundingBoxes();
 
     /**
      * Draws the level on the screen.
@@ -52,6 +55,9 @@ private:
 
     // List of tiles for the current level
     std::vector<Tile> tiles;
+
+    // List of collisions blocks for the current level
+    std::vector<BoundingBox> boundingBoxes;
 
     void loadMap(Graphics &graphics);
 
