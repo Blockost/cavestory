@@ -70,7 +70,6 @@ private:
     float posX, posY;
     float velX, velY;
     Direction facingDirection;
-    BoundingBox boundingBox;
 
     /**
      * Utility method to move the player to the left;

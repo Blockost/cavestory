@@ -48,8 +48,7 @@ void Player::move(float elapsedTime) {
 
     // TODO 12-Feb-2019 blockost Move this statement to the Sprite class (the player class should
     // not be responsible for this)
-    this->boundingBox.set(static_cast<int>(this->posX), static_cast<int>(this->posY),
-                          Globals::SPRITE_WIDTH, Globals::SPRITE_HEIGHT);
+    this->sprite.moveBoundingBox(static_cast<int>(this->posX), static_cast<int>(this->posY));
 }
 
 void Player::handleEvent(const SDL_Event &event) {
@@ -101,7 +100,8 @@ void Player::handleEvent(const SDL_Event &event) {
 
 void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
     for (const auto &bbox: boundingBoxes) {
-        Side collidingSide = this->boundingBox.getCollidingSide(bbox);
+        const auto playerBbox = this->sprite.getBoundingBox();
+        const auto collidingSide = playerBbox.getCollidingSide(bbox);
 
         switch (collidingSide) {
             case Side::LEFT:
@@ -109,14 +109,14 @@ void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
                 break;
             case Side::RIGHT:
                 this->posX =
-                        bbox.getLeftEdge() - (Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE) - 1;
+                        bbox.getLeftEdge() - playerBbox.getWidth() - 1;
                 break;
             case Side::TOP:
                 this->posY = bbox.getBottomEdge() + 1;
                 break;
             case Side::BOTTOM:
                 this->posY =
-                        bbox.getTopEdge() - (Globals::SPRITE_HEIGHT * Globals::SPRITE_SCALE) - 1;
+                        bbox.getTopEdge() - playerBbox.getHeight() - 1;
                 break;
             default:
                 // Not colliding
@@ -127,7 +127,6 @@ void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
 
 void Player::draw(Graphics &graphics) {
     this->sprite.draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
-    this->boundingBox.draw(graphics);
 }
 
 void Player::update(int elapsedTime) {

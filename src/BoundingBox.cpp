@@ -7,26 +7,31 @@
 #include <algorithm>
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox() : x(0), y(0), width(0), height(0), isVisible(true) {}
+BoundingBox::BoundingBox() : x(0), y(0), width(Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE),
+                             height(Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE),
+                             isVisible(true) {}
 
-BoundingBox::BoundingBox(int x, int y, int width, int height) : x(x), y(y), width(width),
-                                                                height(height), isVisible(true) {}
+BoundingBox::BoundingBox(int x, int y, int width, int height) : x(x * Globals::SPRITE_SCALE),
+                                                                y(y * Globals::SPRITE_SCALE),
+                                                                width(width *
+                                                                      Globals::SPRITE_SCALE),
+                                                                height(height *
+                                                                       Globals::SPRITE_SCALE),
+                                                                isVisible(true) {}
 
 BoundingBox::~BoundingBox() = default;
 
-void BoundingBox::set(int x, int y, int width, int height) {
+void BoundingBox::set(int x, int y) {
     this->x = x;
     this->y = y;
-    this->width = height;
-    this->height = width;
 }
 
-int BoundingBox::getCenterX() const {
-    return (this->getLeftEdge() + this->getRightEdge()) / 2;
+int BoundingBox::getWidth() const {
+    return this->width;
 }
 
-int BoundingBox::getcenterY() const {
-    return (this->getTopEdge() + this->getBottomEdge()) / 2;
+int BoundingBox::getHeight() const {
+    return this->height;
 }
 
 int BoundingBox::getLeftEdge() const {
@@ -34,7 +39,7 @@ int BoundingBox::getLeftEdge() const {
 }
 
 int BoundingBox::getRightEdge() const {
-    return this->x + width * Globals::SPRITE_SCALE;
+    return this->x + width;
 }
 
 int BoundingBox::getTopEdge() const {
@@ -42,7 +47,7 @@ int BoundingBox::getTopEdge() const {
 }
 
 int BoundingBox::getBottomEdge() const {
-    return this->y + height * Globals::SPRITE_SCALE;
+    return this->y + height;
 }
 
 Side BoundingBox::getCollidingSide(const BoundingBox &other) const {
@@ -82,8 +87,7 @@ Side BoundingBox::getCollidingSide(const BoundingBox &other) const {
 
 void BoundingBox::draw(Graphics &graphics) const {
     if (this->isVisible) {
-        const SDL_Rect rect{this->x, this->y, this->width * Globals::SPRITE_SCALE,
-                            this->height * Globals::SPRITE_SCALE};
+        const SDL_Rect rect{this->x, this->y, this->width, this->height};
         graphics.DrawRectToRenderer(&rect);
     }
 }

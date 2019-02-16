@@ -79,11 +79,10 @@ void Level::loadMap(Graphics &graphics) {
         if (layer["name"] == "collisions") {
             auto collisionObjects = layer["objects"];
             for (const auto &collisionObject: collisionObjects) {
-                this->boundingBoxes.emplace_back(BoundingBox(
-                        static_cast<int>(collisionObject["x"]) * Globals::SPRITE_SCALE,
-                        static_cast<int>(collisionObject["y"]) * Globals::SPRITE_SCALE,
-                        collisionObject["width"],
-                        collisionObject["height"]));
+                this->boundingBoxes.emplace_back(BoundingBox(collisionObject["x"],
+                                                             collisionObject["y"],
+                                                             collisionObject["width"],
+                                                             collisionObject["height"]));
             }
         } else {
             // Parse other layers (which should contain tiles only)

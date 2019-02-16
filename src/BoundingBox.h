@@ -34,11 +34,17 @@ public:
     /**
      * Utility method to set all 4 coords of the bounding box.
      */
-    void set(int x, int y, int width, int height);
+    void set(int x, int y);
 
-    int getCenterX() const;
+    /**
+     * Retrieves bounding box's width.
+     */
+    int getWidth() const;
 
-    int getcenterY() const;
+    /**
+     * Retrieve bounding box's height.
+     */
+    int getHeight() const;
 
     /**
      * Retrieves where the left edge of the bouding box is starting.

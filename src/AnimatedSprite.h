@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include "Graphics.h"
+#include "BoundingBox.h"
 
 class AnimatedSprite {
 public:
@@ -30,6 +31,11 @@ public:
     ~AnimatedSprite();
 
     /**
+     * Retrieves sprite's bounding box.
+     */
+    const BoundingBox &getBoundingBox() const;
+
+    /**
      * Adds a animation to the list of this sprite's animation.
      */
     void addAnimations(const std::string &animationName, int numberOfFrames, int x, int y);
@@ -43,6 +49,11 @@ public:
      * Sets the given animation as the one to be played.
      */
     void setAnimation(const std::string &animationName);
+
+    /**
+     * Moves the sprite's bounding box to the given x and y.
+     */
+    void moveBoundingBox(int x, int y);
 
     /**
      * Draws (copies) the current frame of the sprite to the renderer at position x and y.
@@ -67,6 +78,8 @@ private:
     std::string currentAnimation;
     // List of all animations
     std::map<std::string, std::vector<SDL_Rect>> animations{};
+    // The bounding box around the sprite (for collisions detection)
+    BoundingBox boundingBox;
 };
 
 

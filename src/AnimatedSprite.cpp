@@ -10,6 +10,10 @@ AnimatedSprite::AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime) : t
 
 AnimatedSprite::~AnimatedSprite() = default;
 
+const BoundingBox &AnimatedSprite::getBoundingBox() const {
+    return this->boundingBox;
+}
+
 void AnimatedSprite::addAnimations(const std::string &animationName, int numberOfFrames, int x,
                                    int y) {
 
@@ -36,6 +40,10 @@ void AnimatedSprite::setAnimation(const std::string &animationName) {
     this->frameIndex = 0;
 }
 
+void AnimatedSprite::moveBoundingBox(int x, int y) {
+    this->boundingBox.set(x, y);
+}
+
 void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
     if (this->currentAnimation.empty()) {
         fprintf(stderr, "Current animation is not defined.\n");
@@ -48,6 +56,8 @@ void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
                          Globals::SPRITE_HEIGHT * Globals::SPRITE_SCALE};
 
     graphics.copyTextureToRenderer(this->texture, &sourceRect, &destRect);
+
+    this->boundingBox.draw(graphics);
 }
 
 void AnimatedSprite::update(int elapsedTime) {
