@@ -36,21 +36,38 @@ public:
      */
     void set(int x, int y, int width, int height);
 
-    void setColor(RgbColor color);
+    int getCenterX() const;
 
+    int getcenterY() const;
+
+    /**
+     * Retrieves where the left edge of the bouding box is starting.
+     */
     int getLeftEdge() const;
 
+    /**
+     * Retrieved where the right edge of the boudning box is starting.
+     */
     int getRightEdge() const;
 
+    /**
+     * Retrieves where the top edge of the bounding box is starting.
+     */
     int getTopEdge() const;
 
+    /**
+     * Retrieves where the bottom edge of the bounding box is starting.
+     */
     int getBottomEdge() const;
 
     /**
-     * Determines if current bounding box is colliding with another.
+     * Determines which side the current bounding box is colliding with.
      */
-    bool isCollidingWith(const BoundingBox &other) const;
+    Side getCollidingSide(const BoundingBox &other) const;
 
+    /**
+     * Draws the bounding box to the screen.
+     */
     void draw(Graphics &graphics) const;
 
     friend std::ostream &operator<<(std::ostream &os, const BoundingBox &box);
@@ -58,7 +75,11 @@ public:
 private:
     int x, y, width, height;
     bool isVisible;
-    RgbColor color;
+
+    /**
+     * Determines if current bounding box is colliding with another.
+     */
+    bool isCollidingWith(const BoundingBox &other) const;
 };
 
 

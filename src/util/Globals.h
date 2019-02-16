@@ -29,7 +29,7 @@ namespace Globals {
     const float GRAVITY_CAP = 0.20f;
 }
 
-enum Direction {
+enum class Direction {
     LEFT,
     RIGHT,
     UP,
@@ -55,6 +55,14 @@ struct RgbColor {
     RgbColor() : red(0), green(0), blue(0) {}
 
     RgbColor(int red, int green, int blue) : red(red), green(green), blue(blue) {}
+};
+
+enum class Side {
+    LEFT,
+    RIGHT,
+    TOP,
+    BOTTOM,
+    NONE
 };
 
 #endif //CAVESTORY_GLOBALS_H

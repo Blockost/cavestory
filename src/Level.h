@@ -32,7 +32,10 @@ public:
      */
     ~Level();
 
-    std::vector<BoundingBox> &getBoundingBoxes();
+    /**
+     * Retrieves all the bounding boxes of the current level.
+     */
+    const std::vector<BoundingBox> &getBoundingBoxes();
 
     /**
      * Draws the level on the screen.

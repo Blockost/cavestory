@@ -5,9 +5,10 @@
 #include <util/Globals.h>
 #include "Player.h"
 
-Player::Player() : posX(0), posY(0), velX(0), velY(0), facingDirection(RIGHT) {}
+Player::Player() : posX(0), posY(0), velX(0), velY(0), facingDirection(Direction::RIGHT) {}
 
-Player::Player(Graphics &graphics) : posX(0), posY(0), velX(0), velY(0), facingDirection(RIGHT) {
+Player::Player(Graphics &graphics) : posX(0), posY(0), velX(0), velY(0),
+                                     facingDirection(Direction::RIGHT) {
 
     SDL_Texture *playerTexture = graphics.getTexture("../data/sprites/MyChar.png");
 
@@ -25,10 +26,6 @@ Player::Player(Graphics &graphics) : posX(0), posY(0), velX(0), velY(0), facingD
 
 Player::~Player() = default;
 
-const BoundingBox Player::getBoundingBox() const {
-    return this->boundingBox;
-}
-
 void Player::setAnimation(const std::string &animationName) {
     this->sprite.setAnimation(animationName);
 }
@@ -38,12 +35,14 @@ void Player::move(float elapsedTime) {
     // XXX 02-Feb-2019 blockost Multiplying by elapsedTime is supposed to smooth movements
     // based on frame rate
     const float finalPosX = this->posX + this->velX * elapsedTime;
-    if (finalPosX >= 0 && finalPosX < Globals::SCREEN_WIDTH - Globals::SPRITE_WIDTH * 2) {
+    if (finalPosX >= 0 &&
+        finalPosX < Globals::SCREEN_WIDTH - Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE) {
         this->posX = finalPosX;
     }
 
     const float finalPosY = this->posY + this->velY * elapsedTime;
-    if (finalPosY >= 0 && finalPosY < Globals::SCREEN_HEIGHT - Globals::SPRITE_HEIGHT * 2) {
+    if (finalPosY >= 0 &&
+        finalPosY < Globals::SCREEN_HEIGHT - Globals::SPRITE_HEIGHT * Globals::SPRITE_SCALE) {
         this->posY = finalPosY;
     }
 
@@ -100,6 +99,32 @@ void Player::handleEvent(const SDL_Event &event) {
     }
 }
 
+void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
+    for (const auto &bbox: boundingBoxes) {
+        Side collidingSide = this->boundingBox.getCollidingSide(bbox);
+
+        switch (collidingSide) {
+            case Side::LEFT:
+                this->posX = bbox.getRightEdge() + 1;
+                break;
+            case Side::RIGHT:
+                this->posX =
+                        bbox.getLeftEdge() - (Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE) - 1;
+                break;
+            case Side::TOP:
+                this->posY = bbox.getBottomEdge() + 1;
+                break;
+            case Side::BOTTOM:
+                this->posY =
+                        bbox.getTopEdge() - (Globals::SPRITE_HEIGHT * Globals::SPRITE_SCALE) - 1;
+                break;
+            default:
+                // Not colliding
+                break;
+        }
+    }
+}
+
 void Player::draw(Graphics &graphics) {
     this->sprite.draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
     this->boundingBox.draw(graphics);
@@ -139,6 +164,7 @@ void Player::jump() {
 }
 
 void Player::applyGravity() {
+    // TODO 16-Feb-2019 blockost Rework
     if (this->velY <= Globals::GRAVITY_CAP) {
         this->velY += Globals::GRAVITY;
     } else {

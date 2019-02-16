@@ -28,8 +28,6 @@ public:
      */
     ~Player();
 
-    const BoundingBox getBoundingBox() const;
-
     /**
      * Sets the given animation as the one to be played.
      */
@@ -44,6 +42,12 @@ public:
      * Handles SDL Event related to the player.
      */
     void handleEvent(const SDL_Event &event);
+
+    /**
+     * Handles player's collisions with the world.
+     *
+     */
+    void handleCollisions(const std::vector<BoundingBox> &boundingBoxes);
 
     /**
      * Draws the player to the screen (delegating logic to the sprite).

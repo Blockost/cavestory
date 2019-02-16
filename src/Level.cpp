@@ -23,7 +23,7 @@ Level::Level(Graphics &graphics, const std::string &mapName, Coord playerSpawnPo
 
 Level::~Level() = default;
 
-std::vector<BoundingBox> &Level::getBoundingBoxes() {
+const std::vector<BoundingBox> &Level::getBoundingBoxes() {
     return this->boundingBoxes;
 }
 

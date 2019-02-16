@@ -54,7 +54,7 @@ public:
     /**
      * Draws the given rectangle with the given color to the rendering target.
      */
-    void DrawRectToRenderer(const SDL_Rect *rect, RgbColor color);
+    void DrawRectToRenderer(const SDL_Rect *rect);
 
     /**
      * Draws everything stored in the renderer on the actual window.

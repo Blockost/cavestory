@@ -58,12 +58,8 @@ void Graphics::copyTextureToRenderer(SDL_Texture *texture, const SDL_Rect *sourc
     SDL_RenderCopy(this->renderer, texture, sourceRect, destRect);
 }
 
-void Graphics::DrawRectToRenderer(const SDL_Rect *rect, RgbColor color) {
-    SDL_SetRenderDrawColor(this->renderer, color.red, color.green, color.blue, 0);
+void Graphics::DrawRectToRenderer(const SDL_Rect *rect) {
     SDL_RenderDrawRect(this->renderer, rect);
-
-    // Reset draw color (in case it's important...)
-    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 0);
 }
 
 void Graphics::render() {
