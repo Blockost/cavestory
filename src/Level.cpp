@@ -13,9 +13,8 @@ using json = nlohmann::json;
 
 Level::Level() = default;
 
-Level::Level(Graphics &graphics, const std::string &mapName, Coord playerSpawnPoint) : mapSize(
-        Coord(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT)), mapName(
-        mapName) {
+Level::Level(Graphics &graphics, const std::string &mapName) : mapSize(
+        Coord(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT)), mapName(mapName) {
 
     this->mapTexture = graphics.getTexture("../data/backgrounds/bkBlue.png");
     this->loadMap(graphics);
@@ -25,6 +24,14 @@ Level::~Level() = default;
 
 const std::vector<BoundingBox> &Level::getBoundingBoxes() {
     return this->boundingBoxes;
+}
+
+const Coord &Level::getPlayerSpawnPoint() const {
+    return this->spawnPoints.at("PLAYER");
+}
+
+void Level::setPlayerSpawnPoint(int x, int y) {
+    this->spawnPoints["PLAYER"] = Coord(x * Globals::SPRITE_SCALE, y * Globals::SPRITE_SCALE);
 }
 
 void Level::draw(Graphics &graphics) {
@@ -83,6 +90,14 @@ void Level::loadMap(Graphics &graphics) {
                                                              collisionObject["y"],
                                                              collisionObject["width"],
                                                              collisionObject["height"]));
+            }
+        } else if (layer["name"] == "spawn points") {
+            // Parse spawn points object
+            auto spawnPointsObjects = layer["objects"];
+            for (const auto &spawnPoint : spawnPointsObjects) {
+                if (spawnPoint["name"] == "Player") {
+                    this->setPlayerSpawnPoint(spawnPoint["x"], spawnPoint["y"]);
+                }
             }
         } else {
             // Parse other layers (which should contain tiles only)

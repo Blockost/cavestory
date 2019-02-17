@@ -25,7 +25,7 @@ public:
     /**
      * Constructor.
      */
-    Level(Graphics &graphics, const std::string &mapName, Coord playerSpawnPoint);
+    Level(Graphics &graphics, const std::string &mapName);
 
     /**
      * Destructor.
@@ -36,6 +36,16 @@ public:
      * Retrieves all the bounding boxes of the current level.
      */
     const std::vector<BoundingBox> &getBoundingBoxes();
+
+    /**
+     * Retrieves player's spawn point.
+     */
+    const Coord &getPlayerSpawnPoint() const;
+
+    /**
+     * Sets player's spawn point to the given x and y.
+     */
+    void setPlayerSpawnPoint(int x, int y);
 
     /**
      * Draws the level on the screen.
@@ -52,6 +62,9 @@ private:
     SDL_Texture *mapTexture;
     Coord mapSize = Coord(0, 0);
     std::string mapName;
+
+    // Map of all the spawn points for the current level
+    std::map<std::string, Coord> spawnPoints;
 
     // List of tilesets for the current level
     std::vector<Tileset> tilesets;

@@ -21,7 +21,7 @@ public:
     /**
      * Constructor.
      */
-    explicit Player(Graphics &graphics);
+    Player(Graphics &graphics, Coord spawnPoint);
 
     /**
      * Destructor.

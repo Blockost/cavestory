@@ -11,8 +11,8 @@ Game::Game() {
     this->graphics.loadTexture("../data/sprites/MyChar.png");
     this->graphics.loadTexture("../data/backgrounds/bkBlue.png");
 
-    this->player = Player(this->graphics);
-    this->level = Level(this->graphics, "prtcave", Coord(100, 100));
+    this->level = Level(this->graphics, "prtcave");
+    this->player = Player(this->graphics, this->level.getPlayerSpawnPoint());
 
     this->startGameLoop();
 }

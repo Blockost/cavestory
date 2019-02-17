@@ -7,8 +7,8 @@
 
 Player::Player() : posX(0), posY(0), velX(0), velY(0), facingDirection(Direction::RIGHT) {}
 
-Player::Player(Graphics &graphics) : posX(0), posY(0), velX(0), velY(0),
-                                     facingDirection(Direction::RIGHT) {
+Player::Player(Graphics &graphics, Coord spawnPoint) : posX(0), posY(0), velX(0), velY(0),
+                                                       facingDirection(Direction::RIGHT) {
 
     SDL_Texture *playerTexture = graphics.getTexture("../data/sprites/MyChar.png");
 
@@ -22,6 +22,9 @@ Player::Player(Graphics &graphics) : posX(0), posY(0), velX(0), velY(0),
     // Set player's default animation
     this->setAnimation("IdleRight");
     this->facingDirection = Direction::RIGHT;
+
+    this->posX = spawnPoint.x;
+    this->posY = spawnPoint.y;
 }
 
 Player::~Player() = default;
