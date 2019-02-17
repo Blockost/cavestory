@@ -4,15 +4,13 @@
 
 #include "AnimatedSprite.h"
 
-AnimatedSprite::AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime) : texture(texture),
+AnimatedSprite::AnimatedSprite() = default;
+
+AnimatedSprite::AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime) : Sprite(texture),
                                                                                maxFrameLifetime(
                                                                                        maxFrameLifetime) {}
 
 AnimatedSprite::~AnimatedSprite() = default;
-
-const BoundingBox &AnimatedSprite::getBoundingBox() const {
-    return this->boundingBox;
-}
 
 void AnimatedSprite::addAnimations(const std::string &animationName, int numberOfFrames, int x,
                                    int y) {
@@ -40,10 +38,6 @@ void AnimatedSprite::setAnimation(const std::string &animationName) {
     this->frameIndex = 0;
 }
 
-void AnimatedSprite::moveBoundingBox(int x, int y) {
-    this->boundingBox.set(x, y);
-}
-
 void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
     if (this->currentAnimation.empty()) {
         fprintf(stderr, "Current animation is not defined.\n");
@@ -51,13 +45,10 @@ void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
         exit(Flags::ANIMATION_NOT_SELECTED);
     }
 
+    // Retrieve the source rect corresponding to the current animation
     SDL_Rect sourceRect = this->animations[this->currentAnimation][this->frameIndex];
-    SDL_Rect destRect = {x, y, Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE,
-                         Globals::SPRITE_HEIGHT * Globals::SPRITE_SCALE};
-
-    graphics.copyTextureToRenderer(this->texture, &sourceRect, &destRect);
-
-    this->boundingBox.draw(graphics);
+    // then call Sprite class to draw it
+    Sprite::draw(graphics, sourceRect, y, x);
 }
 
 void AnimatedSprite::update(int elapsedTime) {

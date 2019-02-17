@@ -27,8 +27,8 @@ add_executable(cavestory
         src/Game.cpp
         src/Game.h
         src/util/Flags.h
-        src/AnimatedSprite.cpp
-        src/AnimatedSprite.h
+        src/sprite/AnimatedSprite.cpp
+        src/sprite/AnimatedSprite.h
         src/Player.cpp
         src/Player.h
         src/util/Globals.h
@@ -42,7 +42,9 @@ add_executable(cavestory
         src/exceptions/InvalidLevelException.cpp
         src/exceptions/InvalidLevelException.h
         src/BoundingBox.cpp
-        src/BoundingBox.h)
+        src/BoundingBox.h
+        src/sprite/Sprite.cpp
+        src/sprite/Sprite.h)
 
 target_link_libraries(cavestory
         ${SDL2_LIBRARIES}

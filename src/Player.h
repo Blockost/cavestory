@@ -6,7 +6,7 @@
 #define CAVESTORY_PLAYER_H
 
 #include <string>
-#include "AnimatedSprite.h"
+#include "sprite/AnimatedSprite.h"
 #include "util/Globals.h"
 #include "BoundingBox.h"
 

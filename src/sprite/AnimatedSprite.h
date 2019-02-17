@@ -11,14 +11,15 @@
 #include <string>
 #include "Graphics.h"
 #include "BoundingBox.h"
+#include "Sprite.h"
 
-class AnimatedSprite {
+class AnimatedSprite : public Sprite {
 public:
 
     /**
      * Default constructor.
      */
-    AnimatedSprite() = default;
+    AnimatedSprite();
 
     /**
      * Constructor.
@@ -28,12 +29,7 @@ public:
     /**
      * Destructor.
      */
-    ~AnimatedSprite();
-
-    /**
-     * Retrieves sprite's bounding box.
-     */
-    const BoundingBox &getBoundingBox() const;
+    ~AnimatedSprite() override;
 
     /**
      * Adds a animation to the list of this sprite's animation.
@@ -51,11 +47,6 @@ public:
     void setAnimation(const std::string &animationName);
 
     /**
-     * Moves the sprite's bounding box to the given x and y.
-     */
-    void moveBoundingBox(int x, int y);
-
-    /**
      * Draws (copies) the current frame of the sprite to the renderer at position x and y.
      */
     void draw(Graphics &graphics, int x, int y);
@@ -67,7 +58,6 @@ public:
     void update(int elapsedTime);
 
 private:
-    SDL_Texture *texture{};
     // Index of the current frame in the current animation
     int frameIndex = 0;
     // Max number of milliseconds to wait before changing the frame
@@ -78,8 +68,6 @@ private:
     std::string currentAnimation;
     // List of all animations
     std::map<std::string, std::vector<SDL_Rect>> animations{};
-    // The bounding box around the sprite (for collisions detection)
-    BoundingBox boundingBox;
 };
 
 
