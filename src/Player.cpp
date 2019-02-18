@@ -2,13 +2,14 @@
 // Created by blockost on 1/28/19.
 //
 
-#include <util/Globals.h>
 #include "Player.h"
 
-Player::Player() : posX(0), posY(0), velX(0), velY(0), facingDirection(Direction::RIGHT) {}
+Player::Player() : posX(0), posY(0), velX(0), velY(0), facingDirection(Direction::RIGHT),
+                   isGrounded(false) {}
 
 Player::Player(Graphics &graphics, Coord spawnPoint) : posX(0), posY(0), velX(0), velY(0),
-                                                       facingDirection(Direction::RIGHT) {
+                                                       facingDirection(Direction::RIGHT),
+                                                       isGrounded(false) {
 
     SDL_Texture *playerTexture = graphics.getTexture("../data/sprites/MyChar.png");
 
@@ -64,12 +65,6 @@ void Player::handleEvent(const SDL_Event &event) {
             case SDL_SCANCODE_LEFT:
                 this->moveLeft();
                 break;
-            case SDL_SCANCODE_UP:
-                this->moveUp();
-                break;
-            case SDL_SCANCODE_DOWN:
-                this->moveDown();
-                break;
             case SDL_SCANCODE_SPACE:
                 this->jump();
             default:
@@ -81,18 +76,12 @@ void Player::handleEvent(const SDL_Event &event) {
     if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.scancode) {
             case SDL_SCANCODE_RIGHT:
-                this->velX -= X_VELOCITY;
+                this->velX = 0;
                 this->sprite.setAnimation("IdleRight");
                 break;
             case SDL_SCANCODE_LEFT:
-                this->velX += X_VELOCITY;
+                this->velX = 0;
                 this->sprite.setAnimation("IdleLeft");
-                break;
-            case SDL_SCANCODE_UP:
-                this->velY += Y_VELOCITY;
-                break;
-            case SDL_SCANCODE_DOWN:
-                this->velY -= Y_VELOCITY;
                 break;
             default:
                 // Do nothing
@@ -109,17 +98,20 @@ void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
         switch (collidingSide) {
             case Side::LEFT:
                 this->posX = bbox.getRightEdge() + 1;
+                this->velX = 0;
                 break;
             case Side::RIGHT:
-                this->posX =
-                        bbox.getLeftEdge() - playerBbox.getWidth() - 1;
+                this->posX = bbox.getLeftEdge() - playerBbox.getWidth() - 1;
+                this->velX = 0;
                 break;
             case Side::TOP:
                 this->posY = bbox.getBottomEdge() + 1;
+                this->velY = 0;
                 break;
             case Side::BOTTOM:
-                this->posY =
-                        bbox.getTopEdge() - playerBbox.getHeight() - 1;
+                this->posY = bbox.getTopEdge() - playerBbox.getHeight() - 1;
+                this->velY = 0;
+                this->isGrounded = true;
                 break;
             default:
                 // Not colliding
@@ -133,8 +125,7 @@ void Player::draw(Graphics &graphics) {
 }
 
 void Player::update(int elapsedTime) {
-    // TODO 13-Feb-2019 blockost Re-enable when it's ready
-    // this->applyGravity();
+    this->applyGravity();
     this->move(elapsedTime);
     this->sprite.update(elapsedTime);
 }
@@ -151,25 +142,15 @@ void Player::moveRight() {
     this->facingDirection = Direction::RIGHT;
 }
 
-void Player::moveUp() {
-    this->velY -= Y_VELOCITY;
-    this->facingDirection = Direction::UP;
-}
-
-void Player::moveDown() {
-    this->velY += Y_VELOCITY;
-    this->facingDirection = Direction::DOWN;
-}
-
 void Player::jump() {
-    this->velY -= 2 * Y_VELOCITY;
+    if (this->isGrounded) {
+        this->velY -= 1.75f * Y_VELOCITY;
+        this->isGrounded = false;
+    }
 }
 
 void Player::applyGravity() {
-    // TODO 16-Feb-2019 blockost Rework
     if (this->velY <= Globals::GRAVITY_CAP) {
         this->velY += Globals::GRAVITY;
-    } else {
-        this->velY = 0;
     }
 }

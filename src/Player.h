@@ -70,6 +70,7 @@ private:
     float posX, posY;
     float velX, velY;
     Direction facingDirection;
+    bool isGrounded;
 
     /**
      * Utility method to move the player to the left;
@@ -80,16 +81,6 @@ private:
      * Utility method to move the player to the right.
      */
     void moveRight();
-
-    /**
-     * Utility method to move the player upwards.
-     */
-    void moveUp();
-
-    /**
-     * Utility method to move the player downwards.
-     */
-    void moveDown();
 
     /**
      * Utility method to make the player jump. Jumping does not change facing direction.
