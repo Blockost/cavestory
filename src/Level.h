@@ -14,6 +14,9 @@
 #include "Tile.h"
 #include "Tileset.h"
 #include "BoundingBox.h"
+#include "../lib/nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 class Level {
 public:
@@ -75,7 +78,17 @@ private:
     // List of collisions blocks for the current level
     std::vector<BoundingBox> boundingBoxes;
 
+    // Load map from JSON file into objects
     void loadMap(Graphics &graphics);
+
+    // Parse collision objects in the map
+    void parseCollisionObjects(const json &collisionObjects);
+
+    // Parse spawn point object in the map
+    void parseSpawnPointObjects(const json &spawnPointObjects);
+
+    // Parse slope object in the map
+    void parseSlopeObjects(const json &slopeObjects);
 
     const Tileset &getTilesetAssociatedToGid(int gid) const;
 };

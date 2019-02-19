@@ -7,9 +7,6 @@
 
 #include "Level.h"
 #include "exceptions/InvalidLevelException.h"
-#include "../lib/nlohmann/json.hpp"
-
-using json = nlohmann::json;
 
 Level::Level() = default;
 
@@ -78,29 +75,15 @@ void Level::loadMap(Graphics &graphics) {
         this->tilesets.push_back(std::move(tileset));
     }
 
-    // Retrieve tiles
     auto layers = jsonFile["layers"];
     for (const auto &layer : layers) {
 
-        // Parse collision objects
         if (layer["name"] == "collisions") {
-            auto collisionObjects = layer["objects"];
-            for (const auto &collisionObject: collisionObjects) {
-                this->boundingBoxes.emplace_back(BoundingBox(collisionObject["x"],
-                                                             collisionObject["y"],
-                                                             collisionObject["width"],
-                                                             collisionObject["height"]));
-            }
+            this->parseCollisionObjects(layer["objects"]);
         } else if (layer["name"] == "spawn points") {
-            // Parse spawn point object
-            auto spawnPointsObjects = layer["objects"];
-            for (const auto &spawnPoint : spawnPointsObjects) {
-                if (spawnPoint["name"] == "Player") {
-                    this->setPlayerSpawnPoint(spawnPoint["x"], spawnPoint["y"]);
-                }
-            }
+            this->parseSpawnPointObjects(layer["objects"]);
         } else if (layer["name"] == "slopes") {
-            // Parse slope objects
+            this->parseSlopeObjects(layer["objects"]);
         } else {
             // Parse other layers (which should contain tiles only)
             auto data = layer["data"];
@@ -120,6 +103,27 @@ void Level::loadMap(Graphics &graphics) {
         tile.setPositionInTileset();
         tile.setDestinationOnMap(mapWidth);
     }
+}
+
+void Level::parseCollisionObjects(const json &collisionObjects) {
+    for (const auto &collisionObject: collisionObjects) {
+        this->boundingBoxes.emplace_back(BoundingBox(collisionObject["x"],
+                                                     collisionObject["y"],
+                                                     collisionObject["width"],
+                                                     collisionObject["height"]));
+    }
+}
+
+void Level::parseSpawnPointObjects(const json &spawnPointObjects) {
+    for (const auto &spawnPoint : spawnPointObjects) {
+        if (spawnPoint["name"] == "Player") {
+            this->setPlayerSpawnPoint(spawnPoint["x"], spawnPoint["y"]);
+        }
+    }
+}
+
+void Level::parseSlopeObjects(const json &slopeObjects) {
+    // TODO 19-Feb-2019 blockost
 }
 
 const Tileset &Level::getTilesetAssociatedToGid(int gid) const {
