@@ -25,7 +25,7 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16,
+                 "width":32,
                  "x":144,
                  "y":16
                 }, 
@@ -69,7 +69,7 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":48,
+                 "width":47.2617746936365,
                  "x":128,
                  "y":144
                 }, 
@@ -158,6 +158,77 @@
         }, 
         {
          "draworder":"topdown",
+         "id":6,
+         "name":"slopes",
+         "objects":[
+                {
+                 "height":0,
+                 "id":31,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":36.5594870138857,
+                         "y":15.3388384001476
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":112.215712506343,
+                 "y":174.609032615214
+                }, 
+                {
+                 "height":0,
+                 "id":32,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":30.3118830582744,
+                         "y":-20.7220567380834
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":177.441652989369,
+                 "y":190.108760053665
+                }, 
+                {
+                 "height":0,
+                 "id":33,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":-32.0121942232391,
+                         "y":-17.6527382884496
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":111.955931414384,
+                 "y":128.03553417643
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"spawn points",
          "objects":[
@@ -191,8 +262,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":31,
+ "nextlayerid":7,
+ "nextobjectid":34,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.2",

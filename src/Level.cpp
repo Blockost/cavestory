@@ -82,7 +82,7 @@ void Level::loadMap(Graphics &graphics) {
     auto layers = jsonFile["layers"];
     for (const auto &layer : layers) {
 
-        // Parse collisions objects
+        // Parse collision objects
         if (layer["name"] == "collisions") {
             auto collisionObjects = layer["objects"];
             for (const auto &collisionObject: collisionObjects) {
@@ -92,13 +92,15 @@ void Level::loadMap(Graphics &graphics) {
                                                              collisionObject["height"]));
             }
         } else if (layer["name"] == "spawn points") {
-            // Parse spawn points object
+            // Parse spawn point object
             auto spawnPointsObjects = layer["objects"];
             for (const auto &spawnPoint : spawnPointsObjects) {
                 if (spawnPoint["name"] == "Player") {
                     this->setPlayerSpawnPoint(spawnPoint["x"], spawnPoint["y"]);
                 }
             }
+        } else if (layer["name"] == "slopes") {
+            // Parse slope objects
         } else {
             // Parse other layers (which should contain tiles only)
             auto data = layer["data"];
