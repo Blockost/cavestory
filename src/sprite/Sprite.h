@@ -44,7 +44,7 @@ public:
     /**
      * Draws the given rectangle at the given x and y.
      */
-    void draw(Graphics &graphics, SDL_Rect &sourceRect, int y, int x);
+    void draw(Graphics &graphics, SDL_Rect &sourceRect, int y, int x) const;
 
 private:
     // The texture from which the sprite comes from

@@ -52,7 +52,7 @@ public:
     /**
      * Draws the player to the screen (delegating logic to the sprite).
      */
-    void draw(Graphics &graphics);
+    void draw(Graphics &graphics) const;
 
     /**
      * Updates player based on elapsed time since last update.

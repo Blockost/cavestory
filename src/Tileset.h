@@ -15,7 +15,7 @@ public:
     /**
      * Constructor.
      */
-    Tileset(std::string &texturePath, int firstGid, int width, int height);
+    Tileset(const std::string &texturePath, int firstGid, int width, int height);
 
     /**
      * Destructor.

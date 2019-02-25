@@ -39,6 +39,10 @@ void Level::draw(Graphics &graphics) {
     for (const auto &boundingBox: this->boundingBoxes) {
         boundingBox.draw(graphics);
     }
+
+    for (const auto &slope: this->slopes) {
+        slope.draw(graphics);
+    }
 }
 
 void Level::update(int elapsedTime) {}
@@ -64,7 +68,7 @@ void Level::loadMap(Graphics &graphics) {
 
         // TODO 12-Feb-2019 blockost In Tiled, path to tilesets is relative to the map.
         // We should find a more elegant way for a workaround
-        std::string texturePath = "../data/tilesets/" + t["image"].get<std::string>();
+        const std::string &texturePath = "../data/tilesets/" + t["image"].get<std::string>();
         int firstGid = t["firstgid"];
         int tilesetWidth = t["columns"];
         int textureHeight = t["tilecount"].get<int>() / tilesetWidth;
@@ -75,7 +79,7 @@ void Level::loadMap(Graphics &graphics) {
         this->tilesets.push_back(std::move(tileset));
     }
 
-    auto layers = jsonFile["layers"];
+    const auto &layers = jsonFile["layers"];
     for (const auto &layer : layers) {
 
         if (layer["name"] == "collisions") {
@@ -86,7 +90,7 @@ void Level::loadMap(Graphics &graphics) {
             this->parseSlopeObjects(layer["objects"]);
         } else {
             // Parse other layers (which should contain tiles only)
-            auto data = layer["data"];
+            const auto &data = layer["data"];
             int tileCounter = 0;
             for (const auto &t : data) {
                 // Only store tiles whose gid != 0
@@ -123,7 +127,16 @@ void Level::parseSpawnPointObjects(const json &spawnPointObjects) {
 }
 
 void Level::parseSlopeObjects(const json &slopeObjects) {
-    // TODO 19-Feb-2019 blockost
+    for (const auto &slopeObject : slopeObjects) {
+        const auto &startPoint = Coord(slopeObject["x"], slopeObject["y"]);
+        const auto &polyline = slopeObject["polyline"];
+        for (const auto &point : polyline) {
+            const auto &endPoint = Coord(startPoint.x + point["x"].get<int>(),
+                                         startPoint.y + point["y"].get<int>());
+            const auto &slope = Slope(startPoint, endPoint);
+            this->slopes.emplace_back(slope);
+        }
+    }
 }
 
 const Tileset &Level::getTilesetAssociatedToGid(int gid) const {

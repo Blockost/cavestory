@@ -4,7 +4,7 @@
 
 #include "Tileset.h"
 
-Tileset::Tileset(std::string &texturePath, int firstGid, int width, int height) : texturePath(
+Tileset::Tileset(const std::string &texturePath, int firstGid, int width, int height) : texturePath(
         texturePath), firstGid(firstGid), width(width), height(height) {}
 
 Tileset::~Tileset() = default;

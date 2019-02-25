@@ -120,7 +120,7 @@ void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
     }
 }
 
-void Player::draw(Graphics &graphics) {
+void Player::draw(Graphics &graphics) const {
     this->sprite.draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
 }
 

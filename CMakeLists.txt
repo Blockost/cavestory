@@ -44,7 +44,9 @@ add_executable(cavestory
         src/BoundingBox.cpp
         src/BoundingBox.h
         src/sprite/Sprite.cpp
-        src/sprite/Sprite.h)
+        src/sprite/Sprite.h
+        src/Slope.cpp
+        src/Slope.h)
 
 target_link_libraries(cavestory
         ${SDL2_LIBRARIES}

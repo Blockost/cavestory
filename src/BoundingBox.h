@@ -11,7 +11,8 @@
 
 /**
  * A bounding box is a virtual rectangle that encapsultes a game element in order to detect
- * collisions with it. Top-left corner is (x, y) and bottom-right corner is (width, height)
+ * collisions with it. Top-left corner is located at (x, y) and bottom-right corner is located at
+ * (x + width, y + height)
  */
 class BoundingBox {
 public:

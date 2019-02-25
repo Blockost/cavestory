@@ -88,7 +88,7 @@ Side BoundingBox::getCollidingSide(const BoundingBox &other) const {
 void BoundingBox::draw(Graphics &graphics) const {
     if (this->isVisible) {
         const SDL_Rect rect{this->x, this->y, this->width, this->height};
-        graphics.DrawRectToRenderer(&rect);
+        graphics.drawRectToRenderer(&rect);
     }
 }
 

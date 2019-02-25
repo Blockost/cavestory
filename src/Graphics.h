@@ -52,9 +52,14 @@ public:
                                const SDL_Rect *destRect);
 
     /**
+     * Draws the line between the two given end points to the rendering target.
+     */
+    void drawLineToRenderer(Coord p1, Coord p2);
+
+    /**
      * Draws the given rectangle with the given color to the rendering target.
      */
-    void DrawRectToRenderer(const SDL_Rect *rect);
+    void drawRectToRenderer(const SDL_Rect *rect);
 
     /**
      * Draws everything stored in the renderer on the actual window.

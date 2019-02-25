@@ -9,12 +9,13 @@
 #include <util/Globals.h>
 #include <vector>
 #include <ostream>
+#include "../lib/nlohmann/json.hpp"
 
 #include "Graphics.h"
 #include "Tile.h"
 #include "Tileset.h"
 #include "BoundingBox.h"
-#include "../lib/nlohmann/json.hpp"
+#include "Slope.h"
 
 using json = nlohmann::json;
 
@@ -77,6 +78,9 @@ private:
 
     // List of collisions blocks for the current level
     std::vector<BoundingBox> boundingBoxes;
+
+    // List of slopes for the current level
+    std::vector<Slope> slopes;
 
     // Load map from JSON file into objects
     void loadMap(Graphics &graphics);

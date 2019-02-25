@@ -58,7 +58,11 @@ void Graphics::copyTextureToRenderer(SDL_Texture *texture, const SDL_Rect *sourc
     SDL_RenderCopy(this->renderer, texture, sourceRect, destRect);
 }
 
-void Graphics::DrawRectToRenderer(const SDL_Rect *rect) {
+void Graphics::drawLineToRenderer(Coord p1, Coord p2) {
+    SDL_RenderDrawLine(this->renderer, p1.x, p1.y, p2.x, p2.y);
+}
+
+void Graphics::drawRectToRenderer(const SDL_Rect *rect) {
     SDL_RenderDrawRect(this->renderer, rect);
 }
 

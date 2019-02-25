@@ -49,7 +49,7 @@ public:
     /**
      * Draws (copies) the current frame of the sprite to the renderer at position x and y.
      */
-    void draw(Graphics &graphics, int x, int y);
+    void draw(Graphics &graphics, int x, int y) const;
 
     /**
      * Updates the sprite animation based on the elapsed time since last update. Basically, it
@@ -59,7 +59,7 @@ public:
 
 private:
     // Index of the current frame in the current animation
-    int frameIndex = 0;
+    unsigned int frameIndex = 0;
     // Max number of milliseconds to wait before changing the frame
     float maxFrameLifetime = 0;
     // Number of milliseconds since the last frame update

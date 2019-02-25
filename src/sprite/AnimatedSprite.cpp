@@ -38,7 +38,7 @@ void AnimatedSprite::setAnimation(const std::string &animationName) {
     this->frameIndex = 0;
 }
 
-void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
+void AnimatedSprite::draw(Graphics &graphics, int x, int y) const {
     if (this->currentAnimation.empty()) {
         fprintf(stderr, "Current animation is not defined.\n");
         fprintf(stderr, "Use AnimatedSprite::setAnimation method to select an animation first");
@@ -46,7 +46,7 @@ void AnimatedSprite::draw(Graphics &graphics, int x, int y) {
     }
 
     // Retrieve the source rect corresponding to the current animation
-    SDL_Rect sourceRect = this->animations[this->currentAnimation][this->frameIndex];
+    SDL_Rect sourceRect = this->animations.at(this->currentAnimation).at(this->frameIndex);
     // then call Sprite class to draw it
     Sprite::draw(graphics, sourceRect, y, x);
 }

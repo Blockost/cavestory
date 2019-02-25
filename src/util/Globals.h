@@ -43,6 +43,10 @@ struct Coord {
 
     Coord(int x, int y) : x(x), y(y) {};
 
+    friend Coord operator*(const Coord &coord, int factor) {
+        return {coord.x * factor, coord.y * factor};
+    }
+
     friend std::ostream &operator<<(std::ostream &ostream, const Coord &coord) {
         ostream << "(" << coord.x << "," << coord.y << ")";
         return ostream;

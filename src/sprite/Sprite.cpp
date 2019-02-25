@@ -20,7 +20,7 @@ void Sprite::moveBoundingBox(int x, int y) {
     this->boundingBox.set(x, y);
 }
 
-void Sprite::draw(Graphics &graphics, SDL_Rect &sourceRect, int y, int x) {
+void Sprite::draw(Graphics &graphics, SDL_Rect &sourceRect, int y, int x) const {
     SDL_Rect destRect = {x, y, Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE,
                          Globals::SPRITE_HEIGHT * Globals::SPRITE_SCALE};
 
