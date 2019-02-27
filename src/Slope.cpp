@@ -4,8 +4,9 @@
 
 #include "Slope.h"
 
-Slope::Slope(Coord p1, Coord p2) : isVisible(true),
-                                   points(p1 * Globals::SPRITE_SCALE, p2 * Globals::SPRITE_SCALE) {}
+Slope::Slope(const Coord p1, const Coord p2) : isVisible(true),
+                                               points(p1 * Globals::SPRITE_SCALE,
+                                                      p2 * Globals::SPRITE_SCALE) {}
 
 Slope::~Slope() = default;
 

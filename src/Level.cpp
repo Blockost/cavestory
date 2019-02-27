@@ -130,10 +130,14 @@ void Level::parseSlopeObjects(const json &slopeObjects) {
     for (const auto &slopeObject : slopeObjects) {
         const auto &startPoint = Coord(slopeObject["x"], slopeObject["y"]);
         const auto &polyline = slopeObject["polyline"];
-        for (const auto &point : polyline) {
-            const auto &endPoint = Coord(startPoint.x + point["x"].get<int>(),
-                                         startPoint.y + point["y"].get<int>());
-            const auto &slope = Slope(startPoint, endPoint);
+
+        for (unsigned i = 0; i < polyline.size() - 1; i++) {
+            const auto &p1 = Coord(startPoint.x + polyline.at(i)["x"].get<int>(),
+                                   startPoint.y + polyline.at(i)["y"].get<int>());
+            const auto &p2 = Coord(startPoint.x + polyline.at(i + 1)["x"].get<int>(),
+                                   startPoint.y + polyline.at(i + 1)["y"].get<int>());
+
+            const auto &slope = Slope(p1, p2);
             this->slopes.emplace_back(slope);
         }
     }
