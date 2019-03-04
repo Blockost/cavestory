@@ -97,7 +97,9 @@ void Level::loadMap(Graphics &graphics) {
             for (const auto &t : data) {
                 // Only store tiles whose gid != 0
                 if (t != 0) {
-                    Tile tile(t, tileCounter, this->getTilesetAssociatedToGid(t));
+                    const auto ts = this->getTilesetAssociatedToGid(t);
+                    unsigned int gid = t.get<int>() - ts.getFirstGid();
+                    Tile tile(gid, tileCounter, ts);
                     this->tiles.push_back(std::move(tile));
                 }
                 tileCounter++;

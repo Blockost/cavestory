@@ -19,9 +19,8 @@ std::ostream &operator<<(std::ostream &ostream, const Tile &tile) {
 }
 
 void Tile::setPositionInTileset() {
-    int originalGid = this->gid - this->tileset.getFirstGid();
-    this->sourceInTileset.x = originalGid % this->tileset.getWidth() * Globals::SPRITE_WIDTH;
-    this->sourceInTileset.y = originalGid / this->tileset.getWidth() * Globals::SPRITE_HEIGHT;
+    this->sourceInTileset.x = this->gid % this->tileset.getWidth() * Globals::SPRITE_WIDTH;
+    this->sourceInTileset.y = this->gid / this->tileset.getWidth() * Globals::SPRITE_HEIGHT;
 }
 
 void Tile::setDestinationOnMap(int mapWidth) {
