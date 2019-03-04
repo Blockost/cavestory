@@ -94,7 +94,8 @@ private:
     // Parse slope object in the map
     void parseSlopeObjects(const json &slopeObjects);
 
-    const Tileset &getTilesetAssociatedToGid(int gid) const;
+    // Retrieves the tileset where the given tile comes from
+    const Tileset getTilesetAssociatedToGid(int gid) const;
 };
 
 #endif //CAVESTORY_LEVEL_H

@@ -26,6 +26,10 @@ public:
      */
     ~Slope();
 
+    // TODO 03-Mar-2019 blockost implement a method to detect if a bounding box is
+    //  colliding with a slope (since a slope will never be a moving object), i.e impl
+    //  isCollidingWith(const Boundingbox& bbox)
+
     /**
      * Draws the slope onto the screen.
      */

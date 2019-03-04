@@ -13,7 +13,9 @@ Level::Level() = default;
 Level::Level(Graphics &graphics, const std::string &mapName) : mapSize(
         Coord(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT)), mapName(mapName) {
 
-    this->mapTexture = graphics.getTexture("../data/backgrounds/bkBlue.png");
+    // TODO 03-Mar-2019 blockost mapTexture is not used for the moment
+    // TODO 03-Mar-2019 blockost mapTexture is not used for the moment
+    //this->mapTexture = graphics.getTexture("../data/backgrounds/bkBlue.png");
     this->loadMap(graphics);
 }
 
@@ -71,8 +73,8 @@ void Level::loadMap(Graphics &graphics) {
         const std::string &texturePath = "../data/tilesets/" + t["image"].get<std::string>();
         int firstGid = t["firstgid"];
         int tilesetWidth = t["columns"];
-        int textureHeight = t["tilecount"].get<int>() / tilesetWidth;
-        Tileset tileset(texturePath, firstGid, tilesetWidth, textureHeight);
+        int tilesetHeight = t["tilecount"].get<int>() / tilesetWidth;
+        Tileset tileset(texturePath, firstGid, tilesetWidth, tilesetHeight);
 
         // Load texture and store it to the list of tilesets
         graphics.loadTexture(texturePath);
@@ -143,12 +145,33 @@ void Level::parseSlopeObjects(const json &slopeObjects) {
     }
 }
 
-const Tileset &Level::getTilesetAssociatedToGid(int gid) const {
-    for (const auto &tileset : this->tilesets) {
-        if (gid >= tileset.getFirstGid()) {
-            return tileset;
-        }
+/**
+ * To retrieve the associated tileset, we need to get the tileset with the higher firstgid but less
+ * than the given gid.
+ */
+const Tileset Level::getTilesetAssociatedToGid(int gid) const {
+
+    // TODO 03-Mar-2019 blockost Find a way to return a reference to the tileset, not a copy
+
+    // XXX 03-Mar-2019 blockost
+    // From https://stackoverflow.com/questions/21204676/modern-way-to-filter-stl-container
+    std::vector<Tileset> candidateTilesets;
+
+    // Retrieves the tilesets with firstgid <= gid
+    std::copy_if(this->tilesets.begin(), this->tilesets.end(),
+                 std::back_inserter(candidateTilesets),
+                 [gid](const Tileset &t) { return gid >= t.getFirstGid(); });
+
+    // Retrieve the tileset with the higher firstgid from the list of candidates
+    const auto associatedTileset = std::max_element(candidateTilesets.begin(),
+                                                    candidateTilesets.end(),
+                                                    [](const Tileset &t1, const Tileset &t2) {
+                                                        return t1.getFirstGid() < t2.getFirstGid();
+                                                    });
+
+    if (associatedTileset == candidateTilesets.end()) {
+        throw InvalidLevelException("No tileset found!");
     }
 
-    throw InvalidLevelException("No tileset found!");
+    return (*associatedTileset);
 }
