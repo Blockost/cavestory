@@ -4,9 +4,9 @@
 
 #include "Sprite.h"
 
-Sprite::Sprite() = default;
-
-Sprite::Sprite(SDL_Texture *texture) : texture(texture) {
+Sprite::Sprite(SDL_Texture *texture)
+        : texture(texture),
+          boundingBox(BoundingBox(0, 0, Globals::SPRITE_WIDTH, Globals::SPRITE_HEIGHT)) {
 
 }
 

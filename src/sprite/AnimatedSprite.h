@@ -17,12 +17,9 @@ class AnimatedSprite : public Sprite {
 public:
 
     /**
-     * Default constructor.
-     */
-    AnimatedSprite();
-
-    /**
      * Constructor.
+     *
+     * This constructor is used when calling std::make_unique<AnimatedSprite>()
      */
     AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime);
 

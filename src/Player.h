@@ -6,6 +6,7 @@
 #define CAVESTORY_PLAYER_H
 
 #include <string>
+#include <bits/unique_ptr.h>
 #include "sprite/AnimatedSprite.h"
 #include "util/Globals.h"
 #include "BoundingBox.h"
@@ -14,12 +15,9 @@ class Player {
 public:
 
     /**
-     * Default constructor.
-     */
-    Player();
-
-    /**
      * Constructor.
+     *
+     * This constructor is used when calling std::make_unique<Player>()
      */
     Player(Graphics &graphics, Coord spawnPoint);
 
@@ -66,7 +64,7 @@ private:
     // Number of pixels the player can move on the Y-Axis per frame
     constexpr static float Y_VELOCITY = 0.25f;
 
-    AnimatedSprite sprite;
+    std::unique_ptr<AnimatedSprite> sprite;
     float posX, posY;
     float velX, velY;
     Direction facingDirection;

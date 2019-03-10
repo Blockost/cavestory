@@ -12,11 +12,6 @@ class Sprite {
 public:
 
     /**
-     * Default constructor.
-     */
-    Sprite();
-
-    /**
      * Constructor.
      */
     explicit Sprite(SDL_Texture *texture);

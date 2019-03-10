@@ -18,11 +18,6 @@ class BoundingBox {
 public:
 
     /**
-     * Default constructor.
-     */
-    BoundingBox();
-
-    /**
      * Constructor.
      */
     BoundingBox(int x, int y, int width, int height);

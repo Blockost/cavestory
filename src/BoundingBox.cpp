@@ -7,10 +7,6 @@
 #include <algorithm>
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox() : x(0), y(0), width(Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE),
-                             height(Globals::SPRITE_WIDTH * Globals::SPRITE_SCALE),
-                             isVisible(true) {}
-
 BoundingBox::BoundingBox(int x, int y, int width, int height) : x(x * Globals::SPRITE_SCALE),
                                                                 y(y * Globals::SPRITE_SCALE),
                                                                 width(width *

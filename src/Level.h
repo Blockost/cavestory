@@ -24,6 +24,8 @@ public:
 
     /**
      * Constructor.
+     *
+     * This constructor is used when calling std::make_unique<Level>()
      */
     Level(Graphics &graphics, const std::string &mapName);
 

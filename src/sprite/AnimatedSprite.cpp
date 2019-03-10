@@ -4,11 +4,10 @@
 
 #include "AnimatedSprite.h"
 
-AnimatedSprite::AnimatedSprite() = default;
+AnimatedSprite::AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime)
+        : Sprite(texture), maxFrameLifetime(maxFrameLifetime) {
 
-AnimatedSprite::AnimatedSprite(SDL_Texture *texture, float maxFrameLifetime) : Sprite(texture),
-                                                                               maxFrameLifetime(
-                                                                                       maxFrameLifetime) {}
+}
 
 AnimatedSprite::~AnimatedSprite() = default;
 

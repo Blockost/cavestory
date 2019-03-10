@@ -29,10 +29,13 @@ private:
     // TODO 02-Feb-2019 blockost Limit frame per second?
     // Max number of frame per second
     const int FPS = 50;
-    Graphics graphics;
-    Player player;
+    std::unique_ptr<Graphics> graphics;
+    std::unique_ptr<Player> player;
     std::unique_ptr<Level> level;
 
+    /**
+     * Starts the game loop.
+     */
     void startGameLoop();
 
     /**
@@ -41,6 +44,9 @@ private:
      */
     void draw();
 
+    /**
+     * Mother-method to update all game components based on time elapsed since last update.
+     */
     void update(unsigned elapsedTime);
 };
 

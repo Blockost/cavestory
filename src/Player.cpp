@@ -4,8 +4,6 @@
 
 #include "Player.h"
 
-Player::Player() : posX(0), posY(0), velX(0), velY(0), facingDirection(Direction::RIGHT),
-                   isGrounded(false) {}
 
 Player::Player(Graphics &graphics, Coord spawnPoint) : posX(0), posY(0), velX(0), velY(0),
                                                        facingDirection(Direction::RIGHT),
@@ -13,12 +11,12 @@ Player::Player(Graphics &graphics, Coord spawnPoint) : posX(0), posY(0), velX(0)
 
     SDL_Texture *playerTexture = graphics.getTexture("../data/sprites/MyChar.png");
 
-    this->sprite = AnimatedSprite(playerTexture, 100);
-    this->sprite.addAnimations("RunLeft", 3, 0, 0);
-    this->sprite.addAnimations("RunRight", 3, 0, 16);
+    this->sprite = std::make_unique<AnimatedSprite>(playerTexture, 100);
+    this->sprite->addAnimations("RunLeft", 3, 0, 0);
+    this->sprite->addAnimations("RunRight", 3, 0, 16);
 
-    this->sprite.addAnimations("IdleLeft", 1, 0, 0);
-    this->sprite.addAnimations("IdleRight", 1, 0, 16);
+    this->sprite->addAnimations("IdleLeft", 1, 0, 0);
+    this->sprite->addAnimations("IdleRight", 1, 0, 16);
 
     // Set player's default animation
     this->setAnimation("IdleRight");
@@ -31,7 +29,7 @@ Player::Player(Graphics &graphics, Coord spawnPoint) : posX(0), posY(0), velX(0)
 Player::~Player() = default;
 
 void Player::setAnimation(const std::string &animationName) {
-    this->sprite.setAnimation(animationName);
+    this->sprite->setAnimation(animationName);
 }
 
 void Player::move(float elapsedTime) {
@@ -52,7 +50,7 @@ void Player::move(float elapsedTime) {
 
     // TODO 12-Feb-2019 blockost Move this statement to the Sprite class (the player class should
     // not be responsible for this)
-    this->sprite.moveBoundingBox(static_cast<int>(this->posX), static_cast<int>(this->posY));
+    this->sprite->moveBoundingBox(static_cast<int>(this->posX), static_cast<int>(this->posY));
 }
 
 void Player::handleEvent(const SDL_Event &event) {
@@ -77,11 +75,11 @@ void Player::handleEvent(const SDL_Event &event) {
         switch (event.key.keysym.scancode) {
             case SDL_SCANCODE_RIGHT:
                 this->velX = 0;
-                this->sprite.setAnimation("IdleRight");
+                this->sprite->setAnimation("IdleRight");
                 break;
             case SDL_SCANCODE_LEFT:
                 this->velX = 0;
-                this->sprite.setAnimation("IdleLeft");
+                this->sprite->setAnimation("IdleLeft");
                 break;
             default:
                 // Do nothing
@@ -92,7 +90,7 @@ void Player::handleEvent(const SDL_Event &event) {
 
 void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
     for (const auto &bbox: boundingBoxes) {
-        const auto playerBbox = this->sprite.getBoundingBox();
+        const auto playerBbox = this->sprite->getBoundingBox();
         const auto collidingSide = playerBbox.getCollidingSide(bbox);
 
         switch (collidingSide) {
@@ -121,13 +119,13 @@ void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
 }
 
 void Player::draw(Graphics &graphics) const {
-    this->sprite.draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
+    this->sprite->draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
 }
 
 void Player::update(int elapsedTime) {
     this->applyGravity();
     this->move(elapsedTime);
-    this->sprite.update(elapsedTime);
+    this->sprite->update(elapsedTime);
 }
 
 void Player::moveLeft() {
