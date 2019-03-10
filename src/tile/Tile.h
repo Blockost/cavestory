@@ -18,13 +18,16 @@ public:
 
     /**
      * Constructor.
+     *
+     * Tile's id is expected to be the "true" position of the tile in the tileset, without the
+     * offset by Tileset's firstgid.
      */
-    Tile(int gid, int positionInJson, Tileset tileset);
+    Tile(unsigned id, unsigned positionInJson, const Tileset &tileset);
 
     /**
      * Destructor.
      */
-    ~Tile();
+    virtual ~Tile();
 
     friend std::ostream &operator<<(std::ostream &os, const Tile &tile);
 
@@ -36,16 +39,24 @@ public:
     /**
      * Computes and sets where the tile should be draw on the map (i.g on the screen).
      */
-    void setDestinationOnMap(int mapWidth);
+    void setDestinationOnMap(unsigned mapWidth);
 
-    /**
+    virtual /**
      * Draws the tile on the screen.
      */
     void draw(Graphics &graphics) const;
 
-private:
-    int gid;
-    int positionInJson;
+    /**
+     * Updates the tile based on elapsed time since last update.
+     *
+     * XXX 09-Mar-2019 blockost This method is a no-op for class Tile but is defined here so
+     * that we can use polymorphism and dynamic binding on Tile/AnimatedTile classes
+     */
+    virtual void update(unsigned elapsedTime);
+
+protected:
+    unsigned id;
+    unsigned positionInJson;
     Tileset tileset;
     Coord sourceInTileset;
     Coord destinationOnMap;

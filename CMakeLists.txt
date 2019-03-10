@@ -35,10 +35,10 @@ add_executable(cavestory
         src/Level.cpp
         src/Level.h
         lib/nlohmann/json.hpp
-        src/Tileset.cpp
-        src/Tileset.h
-        src/Tile.cpp
-        src/Tile.h
+        src/tile/Tileset.cpp
+        src/tile/Tileset.h
+        src/tile/Tile.cpp
+        src/tile/Tile.h
         src/exceptions/InvalidLevelException.cpp
         src/exceptions/InvalidLevelException.h
         src/BoundingBox.cpp
@@ -46,7 +46,11 @@ add_executable(cavestory
         src/sprite/Sprite.cpp
         src/sprite/Sprite.h
         src/Slope.cpp
-        src/Slope.h)
+        src/Slope.h
+        src/tile/AnimatedTile.cpp
+        src/tile/AnimatedTile.h
+        src/tile/TileAnimation.cpp
+        src/tile/TileAnimation.h)
 
 target_link_libraries(cavestory
         ${SDL2_LIBRARIES}

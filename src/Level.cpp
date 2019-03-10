@@ -4,16 +4,14 @@
 
 #include <sstream>
 #include <fstream>
+#include <tile/AnimatedTile.h>
 
 #include "Level.h"
 #include "exceptions/InvalidLevelException.h"
 
-Level::Level() = default;
-
 Level::Level(Graphics &graphics, const std::string &mapName) : mapSize(
         Coord(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT)), mapName(mapName) {
 
-    // TODO 03-Mar-2019 blockost mapTexture is not used for the moment
     // TODO 03-Mar-2019 blockost mapTexture is not used for the moment
     //this->mapTexture = graphics.getTexture("../data/backgrounds/bkBlue.png");
     this->loadMap(graphics);
@@ -35,7 +33,7 @@ void Level::setPlayerSpawnPoint(int x, int y) {
 
 void Level::draw(Graphics &graphics) {
     for (const auto &tile : this->tiles) {
-        tile.draw(graphics);
+        tile->draw(graphics);
     }
 
     for (const auto &boundingBox: this->boundingBoxes) {
@@ -47,7 +45,11 @@ void Level::draw(Graphics &graphics) {
     }
 }
 
-void Level::update(int elapsedTime) {}
+void Level::update(unsigned elapsedTime) {
+    for (auto &tile : this->tiles) {
+        tile->update(elapsedTime);
+    }
+}
 
 
 void Level::loadMap(Graphics &graphics) {
@@ -61,20 +63,35 @@ void Level::loadMap(Graphics &graphics) {
     auto jsonFile = json::parse(ifs);
 
     // Retrieve map size (width, height)
-    const int mapWidth = jsonFile["width"];
-    const int mapHeight = jsonFile["height"];
+    const unsigned mapWidth = jsonFile["width"];
 
     // Retrieve tilesets texture + size (width, height)
-    auto tilesets = jsonFile["tilesets"];
+    const auto tilesets = jsonFile["tilesets"];
     for (const auto &t: tilesets) {
 
         // TODO 12-Feb-2019 blockost In Tiled, path to tilesets is relative to the map.
         // We should find a more elegant way for a workaround
         const std::string &texturePath = "../data/tilesets/" + t["image"].get<std::string>();
-        int firstGid = t["firstgid"];
-        int tilesetWidth = t["columns"];
-        int tilesetHeight = t["tilecount"].get<int>() / tilesetWidth;
-        Tileset tileset(texturePath, firstGid, tilesetWidth, tilesetHeight);
+        unsigned firstGid = t["firstgid"];
+        unsigned tilesetWidth = t["columns"];
+        unsigned tilesetHeight = t["tilecount"].get<int>() / tilesetWidth;
+
+        std::vector<TileAnimation> animations;
+
+        // Checkin if this tileset contains animations
+        if (t.find("tiles") != t.end()) {
+            // Retrieve and store animation
+            for (const auto &tile : t["tiles"]) {
+                std::vector<std::pair<unsigned, unsigned>> animation;
+                for (const auto &a : tile["animation"]) {
+                    std::pair<unsigned, unsigned> pair{a["tileid"], a["duration"]};
+                    animation.push_back(pair);
+                }
+                animations.emplace_back(TileAnimation(animation));
+            }
+        }
+
+        Tileset tileset(texturePath, firstGid, tilesetWidth, tilesetHeight, animations);
 
         // Load texture and store it to the list of tilesets
         graphics.loadTexture(texturePath);
@@ -93,14 +110,20 @@ void Level::loadMap(Graphics &graphics) {
         } else {
             // Parse other layers (which should contain tiles only)
             const auto &data = layer["data"];
-            int tileCounter = 0;
+            unsigned tileCounter = 0;
             for (const auto &t : data) {
-                // Only store tiles whose gid != 0
+                // Only store tiles whose id != 0
                 if (t != 0) {
-                    const auto ts = this->getTilesetAssociatedToGid(t);
-                    unsigned int gid = t.get<int>() - ts.getFirstGid();
-                    Tile tile(gid, tileCounter, ts);
-                    this->tiles.push_back(std::move(tile));
+                    const auto ts = this->getTilesetAssociatedToTileId(t);
+                    unsigned int tileId = t.get<int>() - ts.getFirstTileId();
+                    if (ts.hasAnimationForTile(tileId)) {
+                        std::unique_ptr<Tile> tile(new AnimatedTile(tileId, tileCounter, ts, ts.getAnimationForTile(tileId)));
+                        this->tiles.push_back(std::move(tile));
+                    } else {
+                        std::unique_ptr<Tile> tile(new Tile(tileId, tileCounter, ts));
+                        this->tiles.push_back(std::move(tile));
+                    }
+
                 }
                 tileCounter++;
             }
@@ -108,8 +131,8 @@ void Level::loadMap(Graphics &graphics) {
     }
 
     for (auto &tile : this->tiles) {
-        tile.setPositionInTileset();
-        tile.setDestinationOnMap(mapWidth);
+        tile->setPositionInTileset();
+        tile->setDestinationOnMap(mapWidth);
     }
 }
 
@@ -151,7 +174,7 @@ void Level::parseSlopeObjects(const json &slopeObjects) {
  * To retrieve the associated tileset, we need to get the tileset with the higher firstgid but less
  * than the given gid.
  */
-const Tileset Level::getTilesetAssociatedToGid(int gid) const {
+const Tileset Level::getTilesetAssociatedToTileId(unsigned gid) const {
 
     // TODO 03-Mar-2019 blockost Find a way to return a reference to the tileset, not a copy
 
@@ -159,16 +182,17 @@ const Tileset Level::getTilesetAssociatedToGid(int gid) const {
     // From https://stackoverflow.com/questions/21204676/modern-way-to-filter-stl-container
     std::vector<Tileset> candidateTilesets;
 
-    // Retrieves the tilesets with firstgid <= gid
+    // Retrieves the tilesets with firstgid <= id
     std::copy_if(this->tilesets.begin(), this->tilesets.end(),
                  std::back_inserter(candidateTilesets),
-                 [gid](const Tileset &t) { return gid >= t.getFirstGid(); });
+                 [gid](const Tileset &t) { return gid >= t.getFirstTileId(); });
 
     // Retrieve the tileset with the higher firstgid from the list of candidates
     const auto associatedTileset = std::max_element(candidateTilesets.begin(),
                                                     candidateTilesets.end(),
                                                     [](const Tileset &t1, const Tileset &t2) {
-                                                        return t1.getFirstGid() < t2.getFirstGid();
+                                                        return t1.getFirstTileId() <
+                                                               t2.getFirstTileId();
                                                     });
 
     if (associatedTileset == candidateTilesets.end()) {

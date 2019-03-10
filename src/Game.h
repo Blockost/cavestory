@@ -31,7 +31,7 @@ private:
     const int FPS = 50;
     Graphics graphics;
     Player player;
-    Level level;
+    std::unique_ptr<Level> level;
 
     void startGameLoop();
 
@@ -41,7 +41,7 @@ private:
      */
     void draw();
 
-    void update(int elapsedTime);
+    void update(unsigned elapsedTime);
 };
 
 

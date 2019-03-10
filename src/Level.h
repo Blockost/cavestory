@@ -12,8 +12,8 @@
 #include "../lib/nlohmann/json.hpp"
 
 #include "Graphics.h"
-#include "Tile.h"
-#include "Tileset.h"
+#include "tile/Tile.h"
+#include "tile/Tileset.h"
 #include "BoundingBox.h"
 #include "Slope.h"
 
@@ -21,10 +21,6 @@ using json = nlohmann::json;
 
 class Level {
 public:
-    /**
-     * Default constructor.
-     */
-    Level();
 
     /**
      * Constructor.
@@ -59,7 +55,7 @@ public:
     /**
      * Update level based on elapsed time since last update.
      */
-    void update(int elapsedTime);
+    void update(unsigned elapsedTime);
 
 
 private:
@@ -74,7 +70,7 @@ private:
     std::vector<Tileset> tilesets;
 
     // List of tiles for the current level
-    std::vector<Tile> tiles;
+    std::vector<std::unique_ptr<Tile>> tiles;
 
     // List of collisions blocks for the current level
     std::vector<BoundingBox> boundingBoxes;
@@ -95,7 +91,7 @@ private:
     void parseSlopeObjects(const json &slopeObjects);
 
     // Retrieves the tileset where the given tile comes from
-    const Tileset getTilesetAssociatedToGid(int gid) const;
+    const Tileset getTilesetAssociatedToTileId(unsigned gid) const;
 };
 
 #endif //CAVESTORY_LEVEL_H

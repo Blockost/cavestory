@@ -1,3 +1,5 @@
+#include <memory>
+
 //
 // Created by blockost on 1/27/19.
 //
@@ -11,8 +13,8 @@ Game::Game() {
     this->graphics.loadTexture("../data/sprites/MyChar.png");
     this->graphics.loadTexture("../data/backgrounds/bkBlue.png");
 
-    this->level = Level(this->graphics, "prtcave");
-    this->player = Player(this->graphics, this->level.getPlayerSpawnPoint());
+    this->level = std::make_unique<Level>(this->graphics, "prtcave");
+    this->player = Player(this->graphics, this->level->getPlayerSpawnPoint());
 
     this->startGameLoop();
 }
@@ -25,9 +27,9 @@ void Game::startGameLoop() {
     bool gameIsRunning = true;
     SDL_Event event;
 
-    int startTimeInMs = SDL_GetTicks();
-    int endTimeInMs;
-    int elapsedTimeInMs;
+    unsigned startTimeInMs = SDL_GetTicks();
+    unsigned endTimeInMs;
+    unsigned elapsedTimeInMs;
 
     while (gameIsRunning) {
         if (SDL_PollEvent(&event)) {
@@ -62,7 +64,7 @@ void Game::draw() {
     this->graphics.clear();
 
     // Draw everything here
-    this->level.draw(this->graphics);
+    this->level->draw(this->graphics);
     // XXX 02-Feb-2019 blockost Player should be the last thing drawn so that it appears on top of
     // everything else
     this->player.draw(this->graphics);
@@ -71,13 +73,13 @@ void Game::draw() {
     this->graphics.render();
 }
 
-void Game::update(int elapsedTime) {
+void Game::update(unsigned elapsedTime) {
     // Player - world collisions
-    this->player.handleCollisions(this->level.getBoundingBoxes());
+    this->player.handleCollisions(this->level->getBoundingBoxes());
 
     // Update the player
     this->player.update(elapsedTime);
 
     // Update the current level
-    this->level.update(elapsedTime);
+    this->level->update(elapsedTime);
 }

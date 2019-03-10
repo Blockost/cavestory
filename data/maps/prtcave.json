@@ -1353,6 +1353,58 @@
       "spacing": 0,
       "tilecount": 300,
       "tileheight": 16,
+      "tiles": [
+        {
+          "animation": [
+            {
+              "duration": 100,
+              "tileid": 18
+            },
+            {
+              "duration": 100,
+              "tileid": 19
+            }
+          ],
+          "id": 18
+        },
+        {
+          "animation": [
+            {
+              "duration": 100,
+              "tileid": 26
+            },
+            {
+              "duration": 100,
+              "tileid": 27
+            },
+            {
+              "duration": 100,
+              "tileid": 28
+            },
+            {
+              "duration": 100,
+              "tileid": 29
+            },
+            {
+              "duration": 100,
+              "tileid": 30
+            },
+            {
+              "duration": 100,
+              "tileid": 31
+            },
+            {
+              "duration": 100,
+              "tileid": 32
+            },
+            {
+              "duration": 100,
+              "tileid": 33
+            }
+          ],
+          "id": 26
+        }
+      ],
       "tilewidth": 16
     }
   ],

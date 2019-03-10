@@ -7,15 +7,21 @@
 
 #include <string>
 #include <exception>
+#include <sstream>
 
 class InvalidLevelException : std::exception {
 
 public:
 
     /**
-     * Constructor.
+     * Constructor taking a std::string.
      */
     explicit InvalidLevelException(const std::string &message);
+
+    /**
+     * Constructor taking a std::stringstream.
+     */
+    explicit InvalidLevelException(const std::stringstream &ss);
 
     const std::string &getMessage() const;
 
