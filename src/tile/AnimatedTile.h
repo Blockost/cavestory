@@ -7,6 +7,13 @@
 
 #include "Tile.h"
 
+/**
+ * This class holds the logic to animate a Tile.
+ *
+ * Basically, this class cycle-though a list of tile that represents an animation and update its
+ * tileId if the current Tile has reached its max lifetime (it supports different durations for
+ * each Tile).
+ */
 class AnimatedTile : public Tile {
 
 public:
@@ -20,8 +27,6 @@ public:
      * Destructor.
      */
     ~AnimatedTile() override;
-
-    void draw(Graphics &graphics) const override;
 
     /**
      * Updates the tile based on elapsed time since last update.

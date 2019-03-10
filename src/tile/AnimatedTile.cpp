@@ -12,10 +12,6 @@ AnimatedTile::AnimatedTile(unsigned tileId, unsigned positionInJson, const Tiles
 
 AnimatedTile::~AnimatedTile() = default;
 
-void AnimatedTile::draw(Graphics &graphics) const {
-    Tile::draw(graphics);
-}
-
 void AnimatedTile::update(unsigned elaspedTime) {
     this->elapsedTime += elaspedTime;
 

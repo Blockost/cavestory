@@ -29,8 +29,6 @@ public:
      */
     virtual ~Tile();
 
-    friend std::ostream &operator<<(std::ostream &os, const Tile &tile);
-
     /**
      * Computes and sets the original position of the tile in the tileset (in pixels).
      */
@@ -41,10 +39,10 @@ public:
      */
     void setDestinationOnMap(unsigned mapWidth);
 
-    virtual /**
+    /**
      * Draws the tile on the screen.
      */
-    void draw(Graphics &graphics) const;
+    virtual void draw(Graphics &graphics) const;
 
     /**
      * Updates the tile based on elapsed time since last update.
@@ -53,6 +51,11 @@ public:
      * that we can use polymorphism and dynamic binding on Tile/AnimatedTile classes
      */
     virtual void update(unsigned elapsedTime);
+
+    /**
+     * Defines stream output operator.
+     */
+    friend std::ostream &operator<<(std::ostream &os, const Tile &tile);
 
 protected:
     unsigned id;
