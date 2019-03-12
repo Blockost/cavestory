@@ -5,9 +5,9 @@
 #include "Player.h"
 
 
-Player::Player(Graphics &graphics, Coord spawnPoint) : posX(0), posY(0), velX(0), velY(0),
-                                                       facingDirection(Direction::RIGHT),
-                                                       isGrounded(false) {
+Player::Player(Graphics &graphics, Coord spawnPoint)
+        : posX(0), posY(0), velX(0), velY(0), accX(0), accY(0), facingDirection(Direction::RIGHT),
+          isOnTheGround(false) {
 
     SDL_Texture *playerTexture = graphics.getTexture("../data/sprites/MyChar.png");
 
@@ -33,6 +33,17 @@ void Player::setAnimation(const std::string &animationName) {
 }
 
 void Player::move(float elapsedTime) {
+
+    // Update velocity
+    float finalVelX = this->velX + this->accX;
+    if (finalVelX <= PLAYER_MAX_VEL_X) {
+        this->velX = finalVelX;
+    }
+
+    float finalVelY = this->velY + this->accY;
+    if (std::fabs(finalVelY) <= PLAYER_MAX_VEL_Y) {
+        this->velY = finalVelY;
+    }
 
     // XXX 02-Feb-2019 blockost Multiplying by elapsedTime is supposed to smooth movements
     // based on frame rate
@@ -63,7 +74,7 @@ void Player::handleEvent(const SDL_Event &event) {
             case SDL_SCANCODE_LEFT:
                 this->moveLeft();
                 break;
-            case SDL_SCANCODE_SPACE:
+            case SDL_SCANCODE_Z:
                 this->jump();
             default:
                 // Do nothing
@@ -74,12 +85,13 @@ void Player::handleEvent(const SDL_Event &event) {
     if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.scancode) {
             case SDL_SCANCODE_RIGHT:
-                this->velX = 0;
-                this->sprite->setAnimation("IdleRight");
+                this->stopMoving();
                 break;
             case SDL_SCANCODE_LEFT:
-                this->velX = 0;
-                this->sprite->setAnimation("IdleLeft");
+                this->stopMoving();
+                break;
+            case SDL_SCANCODE_Z:
+                this->cutJumping();
                 break;
             default:
                 // Do nothing
@@ -109,10 +121,11 @@ void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
             case Side::BOTTOM:
                 this->posY = bbox.getTopEdge() - playerBbox.getHeight() - 1;
                 this->velY = 0;
-                this->isGrounded = true;
+                this->isOnTheGround = true;
                 break;
             default:
                 // Not colliding
+                //this->isOnTheGround = false;
                 break;
         }
     }
@@ -122,33 +135,54 @@ void Player::draw(Graphics &graphics) const {
     this->sprite->draw(graphics, static_cast<int>(this->posX), static_cast<int>(this->posY));
 }
 
-void Player::update(int elapsedTime) {
-    this->applyGravity();
+void Player::update(unsigned elapsedTime) {
+    this->applyFriction(elapsedTime);
+    this->applyGravity(elapsedTime);
     this->move(elapsedTime);
     this->sprite->update(elapsedTime);
 }
 
 void Player::moveLeft() {
+    this->accX = -PLAYER_NOMINAL_ACC_X;
     this->setAnimation("RunLeft");
-    this->velX -= X_VELOCITY;
     this->facingDirection = Direction::LEFT;
 }
 
 void Player::moveRight() {
+    this->accX = PLAYER_NOMINAL_ACC_X;
     this->setAnimation("RunRight");
-    this->velX += X_VELOCITY;
     this->facingDirection = Direction::RIGHT;
 }
 
-void Player::jump() {
-    if (this->isGrounded) {
-        this->velY -= 1.75f * Y_VELOCITY;
-        this->isGrounded = false;
+void Player::stopMoving() {
+    // XXX 10-Mar-2019 blockost The player won't be accelerating anymore and frictions will reduce
+    // its velocity little by little
+    this->accX = 0;
+
+    if (this->facingDirection == Direction::RIGHT) {
+        this->sprite->setAnimation("IdleRight");
+    } else {
+        this->sprite->setAnimation("IdleLeft");
     }
 }
 
-void Player::applyGravity() {
-    if (this->velY <= Globals::GRAVITY_CAP) {
-        this->velY += Globals::GRAVITY;
+void Player::jump() {
+    if (this->isOnTheGround) {
+        this->velY = JUMP_VELOCITY;
+        this->isOnTheGround = false;
     }
+}
+
+void Player::cutJumping() {
+    if (this->velY < JUMP_CUT_VELOCITY) {
+        this->velY = JUMP_CUT_VELOCITY;
+    }
+}
+
+void Player::applyGravity(unsigned elapsedTime) {
+    this->velY += Globals::World::GRAVITY * elapsedTime;
+}
+
+void Player::applyFriction(unsigned elapsedTime) {
+    this->velX -= this->velX * Globals::World::FRICTION * elapsedTime;
 }

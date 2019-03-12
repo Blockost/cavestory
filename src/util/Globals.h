@@ -23,10 +23,14 @@ namespace Globals {
     // In order to look nice, sprites should be scale by 2 (16x16 is too little)
     const int SPRITE_SCALE = 2;
 
-    // Gravity (contant pull towards the bottom of the screen) to apply to objects // in the game
-    const float GRAVITY = 0.002f;
-    // Max gravity to be applied
-    const float GRAVITY_CAP = 0.20f;
+    namespace World {
+        // Gravity force (contant pull towards the bottom of the screen) to apply to objects
+        const float GRAVITY = 0.0005f;
+        // Maximum gravity force that can be applied
+        const float GRAVITY_CAP = 0.20f;
+        // Friction to be applied to counter objects movement
+        const float FRICTION = 0.01f;
+    }
 }
 
 enum class Direction {

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <bits/unique_ptr.h>
+#include <cmath>
 #include "sprite/AnimatedSprite.h"
 #include "util/Globals.h"
 #include "BoundingBox.h"
@@ -55,20 +56,31 @@ public:
     /**
      * Updates player based on elapsed time since last update.
      */
-    void update(int elapsedTime);
+    void update(unsigned int elapsedTime);
 
 private:
 
-    // Number of pixels the player can move on the X-Axis per frame
-    constexpr static float X_VELOCITY = 0.25f;
-    // Number of pixels the player can move on the Y-Axis per frame
-    constexpr static float Y_VELOCITY = 0.25f;
+    // Nominal player acceleration along the X-axis (lateral movement)
+    constexpr static float PLAYER_NOMINAL_ACC_X = 0.002f;
+    // Nominal player acceleration along the Y-axis
+    constexpr static float PLAYER_NOMINAL_ACC_Y = 0.005f;
+    // Maximum player speed along the X-axis
+    constexpr static float PLAYER_MAX_VEL_X = 0.35f;
+    // Maximum player speed along the Y-axis
+    constexpr static float PLAYER_MAX_VEL_Y = 0.25f;
+    // Player's jump velocity
+    constexpr static float JUMP_VELOCITY = -0.35f;
+    // The value player's velocity will be reduced to if the jump key is released
+    constexpr static float JUMP_CUT_VELOCITY = -0.07f;
 
     std::unique_ptr<AnimatedSprite> sprite;
     float posX, posY;
     float velX, velY;
+    float accX, accY;
+    // The direction the player is currently facing to
     Direction facingDirection;
-    bool isGrounded;
+    // Is the player on the ground?
+    bool isOnTheGround;
 
     /**
      * Utility method to move the player to the left;
@@ -81,15 +93,31 @@ private:
     void moveRight();
 
     /**
+     * Utility method to stop the player from moving.
+     */
+    void stopMoving();
+
+    /**
      * Utility method to make the player jump. Jumping does not change facing direction.
      */
     void jump();
 
     /**
-     * Utility method that applied gravity to the player by constantly increasing player's velocity
-     * until it reaches a certain cap.
+     * Utility method to stop the player from moving upwards and cut its velocity to a lower value
+     * (allowing the player to start falling).
      */
-    void applyGravity();
+    void cutJumping();
+
+    /**
+     * Utility method that applies gravity to the player.
+     */
+    void applyGravity(unsigned elapsedTime);
+
+    /**
+     * Utility method to gradually reduce lateral movement (i.e movement along the x-axis) to 0 so
+     * that the player stops moving smoothly.
+     */
+    void applyFriction(unsigned elapsedTime);
 };
 
 
