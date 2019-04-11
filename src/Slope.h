@@ -30,6 +30,8 @@ public:
     //  colliding with a slope (since a slope will never be a moving object), i.e impl
     //  isCollidingWith(const Boundingbox& bbox)
 
+    int getY(int x) const;
+
     /**
      * Draws the slope onto the screen.
      */
@@ -38,6 +40,8 @@ public:
 private:
     bool isVisible;
     std::pair<Coord, Coord> points;
+    int slope;
+    int yIntercept;
 };
 
 

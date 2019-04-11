@@ -36,7 +36,7 @@ void Player::move(float elapsedTime) {
 
     // Update velocity
     float finalVelX = this->velX + this->accX;
-    if (finalVelX <= PLAYER_MAX_VEL_X) {
+    if (std::fabs(finalVelX) <= PLAYER_MAX_VEL_X) {
         this->velX = finalVelX;
     }
 
@@ -122,6 +122,7 @@ void Player::handleCollisions(const std::vector<BoundingBox> &boundingBoxes) {
                 this->posY = bbox.getTopEdge() - playerBbox.getHeight() - 1;
                 this->velY = 0;
                 this->isOnTheGround = true;
+                std::cout << "Colliding bottom" << std::endl;
                 break;
             default:
                 // Not colliding
